@@ -12,12 +12,13 @@ int     i;
 int    *j;
 ```
 
-The next step is to import project. Follow `New File or Project -> Import Project -> Import Existing Project` specify project name and location, and add to filters *.sql and *.control.
-Qt Creator adds project files:
+The next step is to import project. Follow `New File or Project -> Import Project -> Import Existing Project` specify project name and location, and add to filters *.sql and *.control. Qt Creator adds project files:
+
 - postgresql.config
 - postgresql.creator
 - postgresql.files
 - postgresql.includes
+
 You do not want these files to be committed into repository either excluded with .gitignore file since they are specific to a particular workflow. Thus, the best approach is to add these files to `.git/info/exclude` file. This file has the same format as any `.gitignore`.
 
 Ok, you are ready to work with PostgreSQL.
