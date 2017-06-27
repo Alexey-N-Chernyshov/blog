@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Alexey Chernyshov's blog</title><link href="https://alexey-n-chernyshov.github.io/" rel="alternate"></link><link href="https://alexey-n-chernyshov.github.io/feeds/all.atom.xml" rel="self"></link><id>https://alexey-n-chernyshov.github.io/</id><updated>2017-06-25T16:00:00+03:00</updated><entry><title>Qt Creator configuration for PostrgreSQL development</title><link href="https://alexey-n-chernyshov.github.io/qt-creator-configuration-for-postrgresql-development.html" rel="alternate"></link><published>2017-06-25T16:00:00+03:00</published><updated>2017-06-25T16:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-25:/qt-creator-configuration-for-postrgresql-development.html</id><summary type="html">&lt;p&gt;Qt Creator configuration for PostgreSQL development&lt;/p&gt;</summary><content type="html">&lt;p&gt;PostgreSQL code is a lot about of macros, which hard to track. Qt Creator allows going to macros declaration on Ctrl+Click.&lt;/p&gt;
+&lt;p&gt;Initial configuration is extremely simple, just set tab width as 4 symbols.
+The PostgreSQL code standard defines tab width as 4 symbols and uses a mix of tabs and spaces. It is awful. For example, the definition of a pointer is aligned with 3 spaces:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;int     i;
+int    *j;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The next step is to import project. Follow &lt;code&gt;New File or Project -&amp;gt; Import Project -&amp;gt; Import Existing Project&lt;/code&gt; specify project name and location, and add to filters &lt;em&gt;.sql and &lt;/em&gt;.control. Qt Creator adds project files:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# Qt Creator files
+postgresql.config
+postgresql.creator
+postgresql.files
+postgresql.includes
+*.autosave
+*.creator.user # Stores per-project user settings
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You do not want these files to be committed into repository either excluded with .gitignore file since they are specific to a particular workflow. Thus, the best approach is to add these files to &lt;code&gt;.git/info/exclude&lt;/code&gt; file. This file has the same format as any &lt;code&gt;.gitignore&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Ok, you are ready to work with PostgreSQL.&lt;/p&gt;</content><category term="Qt Creator"></category><category term="PostgreSQL"></category></entry></feed>

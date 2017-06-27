@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Alexey Chernyshov's blog - misc</title>
+        <link rel="stylesheet" href="https://alexey-n-chernyshov.github.io/theme/css/main.css" />
+        <link href="https://alexey-n-chernyshov.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Alexey Chernyshov's blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://alexey-n-chernyshov.github.io/">Alexey Chernyshov's blog </a></h1>
+                <nav><ul>
+                    <li><a href="https://alexey-n-chernyshov.github.io/pages/about.html">About</a></li>
+                    <li class="active"><a href="https://alexey-n-chernyshov.github.io/category/misc.html">misc</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://alexey-n-chernyshov.github.io/qt-creator-configuration-for-postrgresql-development.html">Qt Creator configuration for PostrgreSQL development</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2017-06-25T16:00:00+03:00">
+                Published: Вс 25 Июнь 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://alexey-n-chernyshov.github.io/author/alexey-chernyshov.html">Alexey Chernyshov</a>
+        </address>
+<p>In <a href="https://alexey-n-chernyshov.github.io/category/misc.html">misc</a>.</p>
+<p>tags: <a href="https://alexey-n-chernyshov.github.io/tag/qt-creator.html">Qt Creator</a> <a href="https://alexey-n-chernyshov.github.io/tag/postgresql.html">PostgreSQL</a> </p>
+</footer><!-- /.post-info --><p>PostgreSQL code is a lot about of macros, which hard to track. Qt Creator allows going to macros declaration on Ctrl+Click.</p>
+<p>Initial configuration is extremely simple, just set tab width as 4 symbols.
+The PostgreSQL code standard defines tab width as 4 symbols and uses a mix of tabs and spaces. It is awful. For example, the definition of a pointer is aligned with 3 spaces:</p>
+<div class="highlight"><pre><span></span>int     i;
+int    *j;
+</pre></div>
+
+
+<p>The next step is to import project. Follow <code>New File or Project -&gt; Import Project -&gt; Import Existing Project</code> specify project name and location, and add to filters <em>.sql and </em>.control. Qt Creator adds project files:</p>
+<div class="highlight"><pre><span></span># Qt Creator files
+postgresql.config
+postgresql.creator
+postgresql.files
+postgresql.includes
+*.autosave
+*.creator.user # Stores per-project user settings
+</pre></div>
+
+
+<p>You do not want these files to be committed into repository either excluded with .gitignore file since they are specific to a particular workflow. Thus, the best approach is to add these files to <code>.git/info/exclude</code> file. This file has the same format as any <code>.gitignore</code>.</p>
+<p>Ok, you are ready to work with PostgreSQL.</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://alexey-n-chernyshov.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-101718081-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+</body>
+</html>
