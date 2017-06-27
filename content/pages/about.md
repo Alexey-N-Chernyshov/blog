@@ -1,7 +1,8 @@
-Title: Hello
+Title: About
 Date: 2017-06-26 14:00
+Modified: 207-06-27 16:40
 Category: General
-Summary: Hello!
+Summary: About blog
 
 Hello, here I will write some articles about programming in general and PostgreSQL development in particular.
 
