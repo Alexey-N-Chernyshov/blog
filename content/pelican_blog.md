@@ -103,7 +103,7 @@ see the output
 ```
 $ make devserver
 ```
-Note that **Ctrl+C** will not stop the server, use
+Note that `Ctrl+C` will not stop the server, use
 ```
 $ ./develop_server.sh stop
 ```
