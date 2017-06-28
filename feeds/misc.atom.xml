@@ -1,5 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Alexey Chernyshov's blog - misc</title><link href="https://alexey-n-chernyshov.github.io/blog/" rel="alternate"></link><link href="https://alexey-n-chernyshov.github.io/blog/feeds/misc.atom.xml" rel="self"></link><id>https://alexey-n-chernyshov.github.io/blog/</id><updated>2017-06-25T16:00:00+03:00</updated><entry><title>Qt Creator configuration for PostrgreSQL development</title><link href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html" rel="alternate"></link><published>2017-06-25T16:00:00+03:00</published><updated>2017-06-25T16:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-25:/blog/qt-creator-configuration-for-postrgresql-development.html</id><summary type="html">&lt;p&gt;Qt Creator configuration for PostgreSQL development&lt;/p&gt;</summary><content type="html">&lt;p&gt;PostgreSQL code is a lot about of macros, which hard to track. Qt Creator allows going to macros declaration on Ctrl+Click.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Alexey Chernyshov's blog - misc</title><link href="https://alexey-n-chernyshov.github.io/blog/" rel="alternate"></link><link href="https://alexey-n-chernyshov.github.io/blog/feeds/misc.atom.xml" rel="self"></link><id>https://alexey-n-chernyshov.github.io/blog/</id><updated>2017-06-29T10:00:00+03:00</updated><entry><title>Static blog with Pelican on GitHub Pages</title><link href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html" rel="alternate"></link><published>2017-06-29T10:00:00+03:00</published><updated>2017-06-29T10:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-29:/blog/pelican-blog.html</id><summary type="html">&lt;p&gt;How to create blog with Pelican and deploy it on GitHub Pages&lt;/p&gt;</summary><content type="html">&lt;p&gt;This &lt;a href="http://eax.me/pelican/"&gt;post&lt;/a&gt; and circumstances make me a blogger. Here I
+will share my first experience in a creation and deployment of a static blog. I
+use &lt;a href="http://docs.getpelican.com/en/stable/#"&gt;Pelican&lt;/a&gt; to generate the site and
+&lt;a href="https://pages.github.com/"&gt;GitHub Pages&lt;/a&gt; to host it.&lt;/p&gt;
+&lt;h1&gt;GitHub&lt;/h1&gt;
+&lt;p&gt;GitHub distinguishes two [types of GitHub Pages]
+(https://help.github.com/articles/user-organization-and-project-pages/):
+ &lt;strong&gt;User Pages&lt;/strong&gt; and &lt;strong&gt;Project Pages&lt;/strong&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;User Page&lt;/strong&gt; provides URL as &lt;code&gt;https://&amp;lt;my-github-account&amp;gt;.github.io&lt;/code&gt; and
+requires site files to be on the &lt;code&gt;master&lt;/code&gt; branch at the root. It creates
+additional obstacles in a workflow.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Project Page&lt;/strong&gt; URL is &lt;code&gt;https://&amp;lt;my-github-account&amp;gt;.github.io/&amp;lt;project&amp;gt;&lt;/code&gt;.
+The site can be deployed in separate branch &lt;code&gt;gh-pages&lt;/code&gt; or &lt;code&gt;/docs&lt;/code&gt; directory on
+&lt;code&gt;master&lt;/code&gt; branch. So, it is possible to use one repository both for the site
+hosting and as a storage for the site generator scripts.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Eventually, my choice is User Page for my personal page with a link to the blog
+and Project Page for the blog. So, I created two repositories:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;my-github-account&amp;gt;.github.io&lt;/code&gt; for [personal page]
+(https://github.com/Alexey-N-Chernyshov/Alexey-N-Chernyshov.github.io) and
+initialize it with the link to the blog.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/Alexey-N-Chernyshov/blog"&gt;blog&lt;/a&gt; and initialize it with
+README file.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We will consider only the second one, the blog. It is time to clone it from
+GitHub.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ git clone git@github.com:&amp;lt;github-account&amp;gt;/&amp;lt;github-account&amp;gt;.github.io.git
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Pelican&lt;/h1&gt;
+&lt;p&gt;Pelican allows to write content in Markdown laguage and build pretty good HTML.
+It is easy to use, has a lot of themes and plugins. And it is really easy to
+start using it. Pelican is written in Python, thus to create a virtual
+environment for the blog project will be a good idea.
+&lt;a href="https://github.com/davisp/ghp-import"&gt;ghp-import&lt;/a&gt; is a handy tool that will
+help with the blog hosting. Finally, &lt;code&gt;pelican-quickstart&lt;/code&gt; asks a set of
+questions and creates a skeleton project.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ mkvirtualenv pelican
+$ pip install pelican markdown ghp-import
+$ pelican-quickstart
+Welcome to pelican-quickstart v3.7.1.
+
+This script will &lt;span class="nb"&gt;help&lt;/span&gt; you create a new Pelican-based website.
+
+Please answer the following questions so this script can generate the files
+needed by Pelican.
+
+
+&amp;gt; Where &lt;span class="k"&gt;do&lt;/span&gt; you want to create your new web site? &lt;span class="o"&gt;[&lt;/span&gt;.&lt;span class="o"&gt;]&lt;/span&gt; .
+&amp;gt; What will be the title of this web site? My blog
+&amp;gt; Who will be the author of this web site? My name
+&amp;gt; What will be the default language of this web site? &lt;span class="o"&gt;[&lt;/span&gt;en&lt;span class="o"&gt;]&lt;/span&gt; en
+&amp;gt; Do you want to specify a URL prefix? e.g., http://example.com   &lt;span class="o"&gt;(&lt;/span&gt;Y/n&lt;span class="o"&gt;)&lt;/span&gt; y
+&amp;gt; What is your URL prefix? &lt;span class="o"&gt;(&lt;/span&gt;see above example&lt;span class="p"&gt;;&lt;/span&gt; no trailing slash&lt;span class="o"&gt;)&lt;/span&gt; http://&amp;lt;github-account&amp;gt;.github.io/blog
+&amp;gt; Do you want to &lt;span class="nb"&gt;enable&lt;/span&gt; article pagination? &lt;span class="o"&gt;(&lt;/span&gt;Y/n&lt;span class="o"&gt;)&lt;/span&gt; y
+&amp;gt; How many articles per page &lt;span class="k"&gt;do&lt;/span&gt; you want? &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt;
+&amp;gt; What is your &lt;span class="nb"&gt;time&lt;/span&gt; zone? &lt;span class="o"&gt;[&lt;/span&gt;Europe/Paris&lt;span class="o"&gt;]&lt;/span&gt; 
+&amp;gt; Do you want to generate a Fabfile/Makefile to automate generation and publishing? &lt;span class="o"&gt;(&lt;/span&gt;Y/n&lt;span class="o"&gt;)&lt;/span&gt; y
+&amp;gt; Do you want an auto-reload &lt;span class="p"&gt;&amp;amp;&lt;/span&gt; simpleHTTP script to assist with theme and site development? &lt;span class="o"&gt;(&lt;/span&gt;Y/n&lt;span class="o"&gt;)&lt;/span&gt; y
+&amp;gt; Do you want to upload your website using FTP? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; n
+&amp;gt; Do you want to upload your website using SSH? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; n
+&amp;gt; Do you want to upload your website using Dropbox? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; n
+&amp;gt; Do you want to upload your website using S3? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; n
+&amp;gt; Do you want to upload your website using Rackspace Cloud Files? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; n
+&amp;gt; Do you want to upload your website using GitHub Pages? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; y
+&amp;gt; Is this your personal page &lt;span class="o"&gt;(&lt;/span&gt;username.github.io&lt;span class="o"&gt;)&lt;/span&gt;? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; n
+Done. Your new project is available at /path/to/the/blog/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Edit .gitignore and commit changes.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;*.pid
+*.pyc
+*.swp
+output/
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;pelican-quickstart&lt;/code&gt; creates two configuration files:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pelicanconf.py&lt;/code&gt; for local development&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;publishconf.py&lt;/code&gt; for product deployment&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Write a content&lt;/h1&gt;
+&lt;p&gt;Ensure you work in virtual environment, if not run &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ workon pelican
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It is convenient to run development server on &lt;a href="https://localhost:8000"&gt;https://localhost:8000&lt;/a&gt; that
+will display changes as you make them. You can start it in the new console to
+see the output&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ make devserver
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Note that &lt;strong&gt;Ctrl+C&lt;/strong&gt; will not stop the server, use&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ./develop_server.sh stop
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;a href="http://docs.getpelican.com/en/stable/content.html"&gt;Pelican stores&lt;/a&gt; all content
+in &lt;code&gt;content&lt;/code&gt; directory. There are two types of content:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;pages&lt;/strong&gt; for content that do not change very often (e.g., About, Contacts)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;articles&lt;/strong&gt;, or chronological blog posts in our case&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;All content can be written in Markdown and should have metadata like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Title&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;My&lt;/span&gt; &lt;span class="kd"&gt;super&lt;/span&gt; &lt;span class="n"&gt;title&lt;/span&gt;
+&lt;span class="n"&gt;Date&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2017&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;03&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;
+&lt;span class="n"&gt;Modified&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2017&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;05&lt;/span&gt; &lt;span class="mi"&gt;19&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;
+&lt;span class="n"&gt;Category&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Python&lt;/span&gt;
+&lt;span class="n"&gt;Tags&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;pelican&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;blog&lt;/span&gt;
+&lt;span class="n"&gt;Slug&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;my&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;post&lt;/span&gt;
+&lt;span class="n"&gt;Authors&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Alexis&lt;/span&gt; &lt;span class="n"&gt;Metaireau&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Conan&lt;/span&gt; &lt;span class="n"&gt;Doyle&lt;/span&gt;
+&lt;span class="n"&gt;Summary&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Short&lt;/span&gt; &lt;span class="n"&gt;version&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt; &lt;span class="n"&gt;feeds&lt;/span&gt;
+
+&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;content&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;my&lt;/span&gt; &lt;span class="kd"&gt;super&lt;/span&gt; &lt;span class="n"&gt;blog&lt;/span&gt; &lt;span class="n"&gt;post&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You can start with about page in &lt;code&gt;content/pages/about.md&lt;/code&gt;.&lt;/p&gt;
+&lt;h1&gt;Hosting&lt;/h1&gt;
+&lt;p&gt;Once you have added content just run&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ make github
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It will generate HTML, commit it to the &lt;code&gt;gh-pages&lt;/code&gt; branch and pushes to GitHub.&lt;/p&gt;
+&lt;h1&gt;Google Analytics&lt;/h1&gt;
+&lt;p&gt;Another good idea is to add Google Analytics to your blog. Go to
+ &lt;a href="http://www.google.com/analytics/"&gt;http://www.google.com/analytics/&lt;/a&gt; and follow instructions. Add ID as 
+&lt;code&gt;US-XXXXXXXX-X&lt;/code&gt; to publishconf.py. Deploy as described above.&lt;/p&gt;
+&lt;h1&gt;Further work&lt;/h1&gt;
+&lt;p&gt;Comments and themes will be considered further.&lt;/p&gt;</content><category term="Pelican"></category><category term="blog"></category></entry><entry><title>Qt Creator configuration for PostrgreSQL development</title><link href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html" rel="alternate"></link><published>2017-06-25T16:00:00+03:00</published><updated>2017-06-25T16:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-25:/blog/qt-creator-configuration-for-postrgresql-development.html</id><summary type="html">&lt;p&gt;Qt Creator configuration for PostgreSQL development&lt;/p&gt;</summary><content type="html">&lt;p&gt;PostgreSQL code is a lot about of macros, which hard to track. Qt Creator allows going to macros declaration on Ctrl+Click.&lt;/p&gt;
 &lt;p&gt;Initial configuration is extremely simple, just set tab width as 4 symbols.
 The PostgreSQL code standard defines tab width as 4 symbols and uses a mix of tabs and spaces. It is awful. For example, the definition of a pointer is aligned with 3 spaces:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;int     i;
