@@ -141,5 +141,18 @@ Another good idea is to add Google Analytics to your blog. Go to
  <http://www.google.com/analytics/> and follow instructions. Add ID as 
 `US-XXXXXXXX-X` to publishconf.py. Deploy as described above.
 
+# Comments
+Comments are provided by [Disqus](https://disqus.com). Head to the website and
+create an account. Here you should copy website name which is equal to the
+string before ```.disqus``` in URL of your account
+(i.e. https://alexey-chernyshovs-blog.disqus.com)...
+![alt text](images/disqus_website_name.png "Website name")
+and paste to pelicanconf.py
+```
+DISQUS_SITENAME = 'alexey-chernyshovs-blog'
+```
+But since Disqus doesn’t recognize the local address, this setting should go
+to publishconf.py.
+
 # Further work
-Comments and themes will be considered further.
+Themes will be considered further.
