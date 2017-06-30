@@ -129,7 +129,7 @@ This is the content of my super blog post.
 
 You can start with about page in `content/pages/about.md`.
 
-# Hosting
+# Publishing
 Once you have added content just run
 ```
 $ make github
