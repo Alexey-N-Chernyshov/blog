@@ -17,12 +17,51 @@
                 <nav><ul>
                     <li><a href="https://alexey-n-chernyshov.github.io/blog/pages/about.html">About</a></li>
                     <li><a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a></li>
+                    <li><a href="https://alexey-n-chernyshov.github.io/blog/category/postgresql.html">PostgreSQL</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html">Static blog with Pelican on GitHub Pages</a></h1>
+                    <h1 class="entry-title"><a href="https://alexey-n-chernyshov.github.io/blog/pgindent.html">pgindent</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2017-06-30T11:00:00+03:00">
+                Published: Пт 30 Июнь 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://alexey-n-chernyshov.github.io/blog/author/alexey-chernyshov.html">Alexey Chernyshov</a>
+        </address>
+<p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/postgresql.html">PostgreSQL</a>.</p>
+<p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/postgresql.html">PostgreSQL</a> </p>
+</footer><!-- /.post-info --><p>The PostgreSQL code has really confusing indents. For the help for programmers,
+there is a tool named pgindent. Earlier it was written in C and has had a set
+of dependencies, the installation was tedious. Now, it is rewritten in Perl and
+don't require anything to run it.
+To indent single file run:</p>
+<div class="highlight"><pre><span></span>src/tools/pgindent/pgindent filename
+</pre></div>
+
+
+<p>To indent all files in current directory:</p>
+<div class="highlight"><pre><span></span>src/tools/pgindent/pgindent
+</pre></div>
+
+
+<p>There are also pgperltidy for Perl.</p><p>There are <a href="https://alexey-n-chernyshov.github.io/blog/pgindent.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html" rel="bookmark"
+                           title="Permalink to Static blog with Pelican on GitHub Pages">Static blog with Pelican on GitHub Pages</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2017-06-29T10:00:00+03:00">
                 Published: Чт 29 Июнь 2017
@@ -33,149 +72,10 @@
         </address>
 <p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a>.</p>
 <p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/pelican.html">Pelican</a> <a href="https://alexey-n-chernyshov.github.io/blog/tag/blog.html">blog</a> </p>
-</footer><!-- /.post-info --><p>This <a href="http://eax.me/pelican/">post</a> and circumstances make me a blogger. Here I
-will share my first experience in a creation and deployment of a static blog. I
-use <a href="http://docs.getpelican.com/en/stable/#">Pelican</a> to generate the site and
-<a href="https://pages.github.com/">GitHub Pages</a> to host it.</p>
-<h1>GitHub</h1>
-<p>GitHub distinguishes two [types of GitHub Pages]
-(https://help.github.com/articles/user-organization-and-project-pages/):
- <strong>User Pages</strong> and <strong>Project Pages</strong>.</p>
-<ul>
-<li><strong>User Page</strong> provides URL as <code>https://&lt;my-github-account&gt;.github.io</code> and
-requires site files to be on the <code>master</code> branch at the root. It creates
-additional obstacles in a workflow.</li>
-<li><strong>Project Page</strong> URL is <code>https://&lt;my-github-account&gt;.github.io/&lt;project&gt;</code>.
-The site can be deployed in separate branch <code>gh-pages</code> or <code>/docs</code> directory on
-<code>master</code> branch. So, it is possible to use one repository both for the site
-hosting and as a storage for the site generator scripts.</li>
-</ul>
-<p>Eventually, my choice is User Page for my personal page with a link to the blog
-and Project Page for the blog. So, I created two repositories:</p>
-<ul>
-<li><code>&lt;my-github-account&gt;.github.io</code> for [personal page]
-(https://github.com/Alexey-N-Chernyshov/Alexey-N-Chernyshov.github.io) and
-initialize it with the link to the blog.</li>
-<li><a href="https://github.com/Alexey-N-Chernyshov/blog">blog</a> and initialize it with
-README file.</li>
-</ul>
-<p>We will consider only the second one, the blog. It is time to clone it from
-GitHub.</p>
-<div class="highlight"><pre><span></span>$ git clone git@github.com:&lt;github-account&gt;/&lt;github-account&gt;.github.io.git
-</pre></div>
-
-
-<h1>Pelican</h1>
-<p>Pelican allows to write content in Markdown laguage and build pretty good HTML.
-It is easy to use, has a lot of themes and plugins. And it is really easy to
-start using it. Pelican is written in Python, thus to create a virtual
-environment for the blog project will be a good idea.
-<a href="https://github.com/davisp/ghp-import">ghp-import</a> is a handy tool that will
-help with the blog hosting. Finally, <code>pelican-quickstart</code> asks a set of
-questions and creates a skeleton project.</p>
-<div class="highlight"><pre><span></span>$ mkvirtualenv pelican
-$ pip install pelican markdown ghp-import
-$ pelican-quickstart
-Welcome to pelican-quickstart v3.7.1.
-
-This script will <span class="nb">help</span> you create a new Pelican-based website.
-
-Please answer the following questions so this script can generate the files
-needed by Pelican.
-
-
-&gt; Where <span class="k">do</span> you want to create your new web site? <span class="o">[</span>.<span class="o">]</span> .
-&gt; What will be the title of this web site? My blog
-&gt; Who will be the author of this web site? My name
-&gt; What will be the default language of this web site? <span class="o">[</span>en<span class="o">]</span> en
-&gt; Do you want to specify a URL prefix? e.g., http://example.com   <span class="o">(</span>Y/n<span class="o">)</span> y
-&gt; What is your URL prefix? <span class="o">(</span>see above example<span class="p">;</span> no trailing slash<span class="o">)</span> http://&lt;github-account&gt;.github.io/blog
-&gt; Do you want to <span class="nb">enable</span> article pagination? <span class="o">(</span>Y/n<span class="o">)</span> y
-&gt; How many articles per page <span class="k">do</span> you want? <span class="o">[</span><span class="m">10</span><span class="o">]</span> <span class="m">10</span>
-&gt; What is your <span class="nb">time</span> zone? <span class="o">[</span>Europe/Paris<span class="o">]</span> 
-&gt; Do you want to generate a Fabfile/Makefile to automate generation and publishing? <span class="o">(</span>Y/n<span class="o">)</span> y
-&gt; Do you want an auto-reload <span class="p">&amp;</span> simpleHTTP script to assist with theme and site development? <span class="o">(</span>Y/n<span class="o">)</span> y
-&gt; Do you want to upload your website using FTP? <span class="o">(</span>y/N<span class="o">)</span> n
-&gt; Do you want to upload your website using SSH? <span class="o">(</span>y/N<span class="o">)</span> n
-&gt; Do you want to upload your website using Dropbox? <span class="o">(</span>y/N<span class="o">)</span> n
-&gt; Do you want to upload your website using S3? <span class="o">(</span>y/N<span class="o">)</span> n
-&gt; Do you want to upload your website using Rackspace Cloud Files? <span class="o">(</span>y/N<span class="o">)</span> n
-&gt; Do you want to upload your website using GitHub Pages? <span class="o">(</span>y/N<span class="o">)</span> y
-&gt; Is this your personal page <span class="o">(</span>username.github.io<span class="o">)</span>? <span class="o">(</span>y/N<span class="o">)</span> n
-Done. Your new project is available at /path/to/the/blog/
-</pre></div>
-
-
-<p>Edit .gitignore and commit changes.</p>
-<div class="highlight"><pre><span></span>*.pid
-*.pyc
-*.swp
-output/
-</pre></div>
-
-
-<p><code>pelican-quickstart</code> creates two configuration files:</p>
-<ul>
-<li><code>pelicanconf.py</code> for local development</li>
-<li><code>publishconf.py</code> for product deployment</li>
-</ul>
-<h1>Write a content</h1>
-<p>Ensure you work in virtual environment, if not run </p>
-<div class="highlight"><pre><span></span>$ workon pelican
-</pre></div>
-
-
-<p>It is convenient to run development server on <a href="https://localhost:8000">https://localhost:8000</a> that
-will display changes as you make them. You can start it in the new console to
-see the output</p>
-<div class="highlight"><pre><span></span>$ make devserver
-</pre></div>
-
-
-<p>Note that <strong>Ctrl+C</strong> will not stop the server, use</p>
-<div class="highlight"><pre><span></span>$ ./develop_server.sh stop
-</pre></div>
-
-
-<p><a href="http://docs.getpelican.com/en/stable/content.html">Pelican stores</a> all content
-in <code>content</code> directory. There are two types of content:</p>
-<ul>
-<li><strong>pages</strong> for content that do not change very often (e.g., About, Contacts)</li>
-<li><strong>articles</strong>, or chronological blog posts in our case</li>
-</ul>
-<p>All content can be written in Markdown and should have metadata like this:</p>
-<div class="highlight"><pre><span></span><span class="n">Title</span><span class="o">:</span> <span class="n">My</span> <span class="kd">super</span> <span class="n">title</span>
-<span class="n">Date</span><span class="o">:</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">03</span> <span class="mi">10</span><span class="o">:</span><span class="mi">20</span>
-<span class="n">Modified</span><span class="o">:</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">05</span> <span class="mi">19</span><span class="o">:</span><span class="mi">30</span>
-<span class="n">Category</span><span class="o">:</span> <span class="n">Python</span>
-<span class="n">Tags</span><span class="o">:</span> <span class="n">pelican</span><span class="o">,</span> <span class="n">blog</span>
-<span class="n">Slug</span><span class="o">:</span> <span class="n">my</span><span class="o">-</span><span class="kd">super</span><span class="o">-</span><span class="n">post</span>
-<span class="n">Authors</span><span class="o">:</span> <span class="n">Alexis</span> <span class="n">Metaireau</span><span class="o">,</span> <span class="n">Conan</span> <span class="n">Doyle</span>
-<span class="n">Summary</span><span class="o">:</span> <span class="n">Short</span> <span class="n">version</span> <span class="k">for</span> <span class="n">index</span> <span class="n">and</span> <span class="n">feeds</span>
-
-<span class="n">This</span> <span class="k">is</span> <span class="n">the</span> <span class="n">content</span> <span class="n">of</span> <span class="n">my</span> <span class="kd">super</span> <span class="n">blog</span> <span class="n">post</span><span class="o">.</span>
-</pre></div>
-
-
-<p>You can start with about page in <code>content/pages/about.md</code>.</p>
-<h1>Hosting</h1>
-<p>Once you have added content just run</p>
-<div class="highlight"><pre><span></span>$ make github
-</pre></div>
-
-
-<p>It will generate HTML, commit it to the <code>gh-pages</code> branch and pushes to GitHub.</p>
-<h1>Google Analytics</h1>
-<p>Another good idea is to add Google Analytics to your blog. Go to
- <a href="http://www.google.com/analytics/">http://www.google.com/analytics/</a> and follow instructions. Add ID as 
-<code>US-XXXXXXXX-X</code> to publishconf.py. Deploy as described above.</p>
-<h1>Further work</h1>
-<p>Comments and themes will be considered further.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</footer><!-- /.post-info -->                <p>How to create blog with Pelican and deploy it on GitHub Pages</p>
+                <a class="readmore" href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html">read more</a>
+<p>There are <a href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
@@ -196,7 +96,7 @@ in <code>content</code> directory. There are two types of content:</p>
 <p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/qt-creator.html">Qt Creator</a> <a href="https://alexey-n-chernyshov.github.io/blog/tag/postgresql.html">PostgreSQL</a> </p>
 </footer><!-- /.post-info -->                <p>Qt Creator configuration for PostgreSQL development</p>
                 <a class="readmore" href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html">read more</a>
-                </div><!-- /.entry-content -->
+<p>There are <a href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->
                 </section><!-- /#content -->
@@ -238,5 +138,14 @@ in <code>content</code> directory. There are two types of content:</p>
     ga('create', 'UA-101718081-1', 'auto');
     ga('send', 'pageview');
     </script>
+<script type="text/javascript">
+    var disqus_shortname = 'https://alexey-n-chernyshov.github.io/blog/';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
 </body>
 </html>

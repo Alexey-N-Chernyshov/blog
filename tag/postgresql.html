@@ -17,12 +17,51 @@
                 <nav><ul>
                     <li><a href="https://alexey-n-chernyshov.github.io/blog/pages/about.html">About</a></li>
                     <li><a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a></li>
+                    <li><a href="https://alexey-n-chernyshov.github.io/blog/category/postgresql.html">PostgreSQL</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html">Qt Creator configuration for PostrgreSQL development</a></h1>
+                    <h1 class="entry-title"><a href="https://alexey-n-chernyshov.github.io/blog/pgindent.html">pgindent</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2017-06-30T11:00:00+03:00">
+                Published: Пт 30 Июнь 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://alexey-n-chernyshov.github.io/blog/author/alexey-chernyshov.html">Alexey Chernyshov</a>
+        </address>
+<p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/postgresql.html">PostgreSQL</a>.</p>
+<p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/postgresql.html">PostgreSQL</a> </p>
+</footer><!-- /.post-info --><p>The PostgreSQL code has really confusing indents. For the help for programmers,
+there is a tool named pgindent. Earlier it was written in C and has had a set
+of dependencies, the installation was tedious. Now, it is rewritten in Perl and
+don't require anything to run it.
+To indent single file run:</p>
+<div class="highlight"><pre><span></span>src/tools/pgindent/pgindent filename
+</pre></div>
+
+
+<p>To indent all files in current directory:</p>
+<div class="highlight"><pre><span></span>src/tools/pgindent/pgindent
+</pre></div>
+
+
+<p>There are also pgperltidy for Perl.</p><p>There are <a href="https://alexey-n-chernyshov.github.io/blog/pgindent.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html" rel="bookmark"
+                           title="Permalink to Qt Creator configuration for PostrgreSQL development">Qt Creator configuration for PostrgreSQL development</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2017-06-25T16:00:00+03:00">
                 Published: Вс 25 Июнь 2017
@@ -33,28 +72,12 @@
         </address>
 <p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a>.</p>
 <p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/qt-creator.html">Qt Creator</a> <a href="https://alexey-n-chernyshov.github.io/blog/tag/postgresql.html">PostgreSQL</a> </p>
-</footer><!-- /.post-info --><p>PostgreSQL code is a lot about of macros, which hard to track. Qt Creator allows going to macros declaration on Ctrl+Click.</p>
-<p>Initial configuration is extremely simple, just set tab width as 4 symbols.
-The PostgreSQL code standard defines tab width as 4 symbols and uses a mix of tabs and spaces. It is awful. For example, the definition of a pointer is aligned with 3 spaces:</p>
-<div class="highlight"><pre><span></span>int     i;
-int    *j;
-</pre></div>
-
-
-<p>The next step is to import project. Follow <code>New File or Project -&gt; Import Project -&gt; Import Existing Project</code> specify project name and location, and add to filters <em>.sql and </em>.control. Qt Creator adds project files:</p>
-<div class="highlight"><pre><span></span># Qt Creator files
-postgresql.config
-postgresql.creator
-postgresql.files
-postgresql.includes
-*.autosave
-*.creator.user # Stores per-project user settings
-</pre></div>
-
-
-<p>You do not want these files to be committed into repository either excluded with .gitignore file since they are specific to a particular workflow. Thus, the best approach is to add these files to <code>.git/info/exclude</code> file. This file has the same format as any <code>.gitignore</code>.</p>
-<p>Ok, you are ready to work with PostgreSQL.</p>                </article>
-            </aside><!-- /#featured -->
+</footer><!-- /.post-info -->                <p>Qt Creator configuration for PostgreSQL development</p>
+                <a class="readmore" href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html">read more</a>
+<p>There are <a href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
@@ -93,5 +116,14 @@ postgresql.includes
     ga('create', 'UA-101718081-1', 'auto');
     ga('send', 'pageview');
     </script>
+<script type="text/javascript">
+    var disqus_shortname = 'https://alexey-n-chernyshov.github.io/blog/';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
 </body>
 </html>

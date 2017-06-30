@@ -17,6 +17,7 @@
                 <nav><ul>
                     <li><a href="https://alexey-n-chernyshov.github.io/blog/pages/about.html">About</a></li>
                     <li class="active"><a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a></li>
+                    <li><a href="https://alexey-n-chernyshov.github.io/blog/category/postgresql.html">PostgreSQL</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
@@ -137,7 +138,7 @@ see the output</p>
 </pre></div>
 
 
-<p>Note that <strong>Ctrl+C</strong> will not stop the server, use</p>
+<p>Note that <code>Ctrl+C</code> will not stop the server, use</p>
 <div class="highlight"><pre><span></span>$ ./develop_server.sh stop
 </pre></div>
 
@@ -177,6 +178,21 @@ in <code>content</code> directory. There are two types of content:</p>
 <h1>Further work</h1>
 <p>Comments and themes will be considered further.</p>
     </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'https://alexey-n-chernyshov.github.io/blog/';
+        var disqus_identifier = 'pelican-blog.html';
+        var disqus_url = 'https://alexey-n-chernyshov.github.io/blog/pelican-blog.html';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//https://alexey-n-chernyshov.github.io/blog/.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
 
   </article>
 </section>
@@ -218,5 +234,14 @@ in <code>content</code> directory. There are two types of content:</p>
     ga('create', 'UA-101718081-1', 'auto');
     ga('send', 'pageview');
     </script>
+<script type="text/javascript">
+    var disqus_shortname = 'https://alexey-n-chernyshov.github.io/blog/';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
 </body>
 </html>

@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Alexey Chernyshov's blog</title><link href="https://alexey-n-chernyshov.github.io/blog/" rel="alternate"></link><link href="https://alexey-n-chernyshov.github.io/blog/feeds/all.atom.xml" rel="self"></link><id>https://alexey-n-chernyshov.github.io/blog/</id><updated>2017-06-29T10:00:00+03:00</updated><entry><title>Static blog with Pelican on GitHub Pages</title><link href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html" rel="alternate"></link><published>2017-06-29T10:00:00+03:00</published><updated>2017-06-29T10:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-29:/blog/pelican-blog.html</id><summary type="html">&lt;p&gt;How to create blog with Pelican and deploy it on GitHub Pages&lt;/p&gt;</summary><content type="html">&lt;p&gt;This &lt;a href="http://eax.me/pelican/"&gt;post&lt;/a&gt; and circumstances make me a blogger. Here I
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Alexey Chernyshov's blog</title><link href="https://alexey-n-chernyshov.github.io/blog/" rel="alternate"></link><link href="https://alexey-n-chernyshov.github.io/blog/feeds/all.atom.xml" rel="self"></link><id>https://alexey-n-chernyshov.github.io/blog/</id><updated>2017-06-30T11:00:00+03:00</updated><entry><title>pgindent</title><link href="https://alexey-n-chernyshov.github.io/blog/pgindent.html" rel="alternate"></link><published>2017-06-30T11:00:00+03:00</published><updated>2017-06-30T11:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-30:/blog/pgindent.html</id><summary type="html">&lt;p&gt;New pgindent tool&lt;/p&gt;</summary><content type="html">&lt;p&gt;The PostgreSQL code has really confusing indents. For the help for programmers,
+there is a tool named pgindent. Earlier it was written in C and has had a set
+of dependencies, the installation was tedious. Now, it is rewritten in Perl and
+don't require anything to run it.
+To indent single file run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;src/tools/pgindent/pgindent filename
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To indent all files in current directory:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;src/tools/pgindent/pgindent
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There are also pgperltidy for Perl.&lt;/p&gt;</content><category term="PostgreSQL"></category></entry><entry><title>Static blog with Pelican on GitHub Pages</title><link href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html" rel="alternate"></link><published>2017-06-29T10:00:00+03:00</published><updated>2017-06-29T10:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-29:/blog/pelican-blog.html</id><summary type="html">&lt;p&gt;How to create blog with Pelican and deploy it on GitHub Pages&lt;/p&gt;</summary><content type="html">&lt;p&gt;This &lt;a href="http://eax.me/pelican/"&gt;post&lt;/a&gt; and circumstances make me a blogger. Here I
 will share my first experience in a creation and deployment of a static blog. I
 use &lt;a href="http://docs.getpelican.com/en/stable/#"&gt;Pelican&lt;/a&gt; to generate the site and
 &lt;a href="https://pages.github.com/"&gt;GitHub Pages&lt;/a&gt; to host it.&lt;/p&gt;
@@ -98,7 +112,7 @@ see the output&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Note that &lt;strong&gt;Ctrl+C&lt;/strong&gt; will not stop the server, use&lt;/p&gt;
+&lt;p&gt;Note that &lt;code&gt;Ctrl+C&lt;/code&gt; will not stop the server, use&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ./develop_server.sh stop
 &lt;/pre&gt;&lt;/div&gt;
 

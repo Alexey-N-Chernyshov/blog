@@ -98,7 +98,7 @@ see the output&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Note that &lt;strong&gt;Ctrl+C&lt;/strong&gt; will not stop the server, use&lt;/p&gt;
+&lt;p&gt;Note that &lt;code&gt;Ctrl+C&lt;/code&gt; will not stop the server, use&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ./develop_server.sh stop
 &lt;/pre&gt;&lt;/div&gt;
 

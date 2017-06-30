@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Alexey Chernyshov's blog</title>
+        <title>Alexey Chernyshov's blog - PostgreSQL</title>
         <link rel="stylesheet" href="https://alexey-n-chernyshov.github.io/blog/theme/css/main.css" />
         <link href="https://alexey-n-chernyshov.github.io/blog/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Alexey Chernyshov's blog Atom Feed" />
 
@@ -17,13 +17,39 @@
                 <nav><ul>
                     <li><a href="https://alexey-n-chernyshov.github.io/blog/pages/about.html">About</a></li>
                     <li><a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a></li>
-                    <li><a href="https://alexey-n-chernyshov.github.io/blog/category/postgresql.html">PostgreSQL</a></li>
+                    <li class="active"><a href="https://alexey-n-chernyshov.github.io/blog/category/postgresql.html">PostgreSQL</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
-<ul>
-    <li><a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a></li>
-    <li><a href="https://alexey-n-chernyshov.github.io/blog/category/postgresql.html">PostgreSQL</a></li>
-</ul>
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://alexey-n-chernyshov.github.io/blog/pgindent.html">pgindent</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2017-06-30T11:00:00+03:00">
+                Published: Пт 30 Июнь 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://alexey-n-chernyshov.github.io/blog/author/alexey-chernyshov.html">Alexey Chernyshov</a>
+        </address>
+<p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/postgresql.html">PostgreSQL</a>.</p>
+<p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/postgresql.html">PostgreSQL</a> </p>
+</footer><!-- /.post-info --><p>The PostgreSQL code has really confusing indents. For the help for programmers,
+there is a tool named pgindent. Earlier it was written in C and has had a set
+of dependencies, the installation was tedious. Now, it is rewritten in Perl and
+don't require anything to run it.
+To indent single file run:</p>
+<div class="highlight"><pre><span></span>src/tools/pgindent/pgindent filename
+</pre></div>
+
+
+<p>To indent all files in current directory:</p>
+<div class="highlight"><pre><span></span>src/tools/pgindent/pgindent
+</pre></div>
+
+
+<p>There are also pgperltidy for Perl.</p><p>There are <a href="https://alexey-n-chernyshov.github.io/blog/pgindent.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
