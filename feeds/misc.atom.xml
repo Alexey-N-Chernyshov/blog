@@ -124,7 +124,7 @@ in &lt;code&gt;content&lt;/code&gt; directory. There are two types of content:&l
 
 
 &lt;p&gt;You can start with about page in &lt;code&gt;content/pages/about.md&lt;/code&gt;.&lt;/p&gt;
-&lt;h1&gt;Hosting&lt;/h1&gt;
+&lt;h1&gt;Publishing&lt;/h1&gt;
 &lt;p&gt;Once you have added content just run&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ make github
 &lt;/pre&gt;&lt;/div&gt;
