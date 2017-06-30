@@ -175,8 +175,21 @@ in <code>content</code> directory. There are two types of content:</p>
 <p>Another good idea is to add Google Analytics to your blog. Go to
  <a href="http://www.google.com/analytics/">http://www.google.com/analytics/</a> and follow instructions. Add ID as 
 <code>US-XXXXXXXX-X</code> to publishconf.py. Deploy as described above.</p>
+<h1>Comments</h1>
+<p>Comments are provided by <a href="https://disqus.com">Disqus</a>. Head to the website and
+create an account. Here you should copy website name which is equal to the
+string before <code>.disqus</code> in URL of your account
+(i.e. https://alexey-chernyshovs-blog.disqus.com)...
+<img alt="alt text" src="images/disqus_website_name.png" title="Website name">
+and paste to pelicanconf.py</p>
+<div class="highlight"><pre><span></span>DISQUS_SITENAME = &#39;alexey-chernyshovs-blog&#39;
+</pre></div>
+
+
+<p>But since Disqus doesn’t recognize the local address, this setting should go
+to publishconf.py.</p>
 <h1>Further work</h1>
-<p>Comments and themes will be considered further.</p>
+<p>Themes will be considered further.</p>
     </div><!-- /.entry-content -->
     <div class="comments">
       <h2>Comments !</h2>

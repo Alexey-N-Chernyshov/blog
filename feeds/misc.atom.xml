@@ -135,8 +135,21 @@ in &lt;code&gt;content&lt;/code&gt; directory. There are two types of content:&l
 &lt;p&gt;Another good idea is to add Google Analytics to your blog. Go to
  &lt;a href="http://www.google.com/analytics/"&gt;http://www.google.com/analytics/&lt;/a&gt; and follow instructions. Add ID as 
 &lt;code&gt;US-XXXXXXXX-X&lt;/code&gt; to publishconf.py. Deploy as described above.&lt;/p&gt;
+&lt;h1&gt;Comments&lt;/h1&gt;
+&lt;p&gt;Comments are provided by &lt;a href="https://disqus.com"&gt;Disqus&lt;/a&gt;. Head to the website and
+create an account. Here you should copy website name which is equal to the
+string before &lt;code&gt;.disqus&lt;/code&gt; in URL of your account
+(i.e. https://alexey-chernyshovs-blog.disqus.com)...
+&lt;img alt="alt text" src="images/disqus_website_name.png" title="Website name"&gt;
+and paste to pelicanconf.py&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DISQUS_SITENAME = &amp;#39;alexey-chernyshovs-blog&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;But since Disqus doesn’t recognize the local address, this setting should go
+to publishconf.py.&lt;/p&gt;
 &lt;h1&gt;Further work&lt;/h1&gt;
-&lt;p&gt;Comments and themes will be considered further.&lt;/p&gt;</content><category term="Pelican"></category><category term="blog"></category></entry><entry><title>Qt Creator configuration for PostrgreSQL development</title><link href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html" rel="alternate"></link><published>2017-06-25T16:00:00+03:00</published><updated>2017-06-25T16:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-25:/blog/qt-creator-configuration-for-postrgresql-development.html</id><summary type="html">&lt;p&gt;Qt Creator configuration for PostgreSQL development&lt;/p&gt;</summary><content type="html">&lt;p&gt;PostgreSQL code is a lot about of macros, which hard to track. Qt Creator allows going to macros declaration on Ctrl+Click.&lt;/p&gt;
+&lt;p&gt;Themes will be considered further.&lt;/p&gt;</content><category term="Pelican"></category><category term="blog"></category></entry><entry><title>Qt Creator configuration for PostrgreSQL development</title><link href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html" rel="alternate"></link><published>2017-06-25T16:00:00+03:00</published><updated>2017-06-25T16:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-25:/blog/qt-creator-configuration-for-postrgresql-development.html</id><summary type="html">&lt;p&gt;Qt Creator configuration for PostgreSQL development&lt;/p&gt;</summary><content type="html">&lt;p&gt;PostgreSQL code is a lot about of macros, which hard to track. Qt Creator allows going to macros declaration on Ctrl+Click.&lt;/p&gt;
 &lt;p&gt;Initial configuration is extremely simple, just set tab width as 4 symbols.
 The PostgreSQL code standard defines tab width as 4 symbols and uses a mix of tabs and spaces. It is awful. For example, the definition of a pointer is aligned with 3 spaces:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;int     i;
