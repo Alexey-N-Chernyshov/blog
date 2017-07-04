@@ -12,7 +12,7 @@ int     i;
 int    *j;
 ```
 
-The next step is to import project. Follow `New File or Project -> Import Project -> Import Existing Project` specify project name and location, and add to filters *.sql and *.control. Qt Creator adds project files:
+The next step is to import project. Follow `New File or Project -> Import Project -> Import Existing Project` specify project name and location, and add to filters *.sql, *.sgml, and *.control. Qt Creator adds project files:
 
 ```
 # Qt Creator files
