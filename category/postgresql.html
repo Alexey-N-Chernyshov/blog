@@ -28,6 +28,10 @@
         <abbr class="published" title="2017-06-30T11:00:00+03:00">
                 Published: Пт 30 Июнь 2017
         </abbr>
+		<br />
+        <abbr class="modified" title="2017-07-21T16:00:00+03:00">
+                Updated: Пт 21 Июль 2017
+        </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="https://alexey-n-chernyshov.github.io/blog/author/alexey-chernyshov.html">Alexey Chernyshov</a>
@@ -35,16 +39,22 @@
 <p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/postgresql.html">PostgreSQL</a>.</p>
 <p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/postgresql.html">PostgreSQL</a> </p>
 </footer><!-- /.post-info --><p>The PostgreSQL code has really confusing indents. For the help for programmers,
-there is a tool named pgindent. Earlier it was written in C and has had a set
-of dependencies, the installation was tedious. Now, it is rewritten in Perl and
-don't require anything to run it.
-To indent single file run:</p>
-<div class="highlight"><pre><span></span>src/tools/pgindent/pgindent filename
+there is a tool named pgindent located at <code>src/tools/pgindent</code>. Earlier it was
+written in C and has had a set of dependencies, the installation was tedious.
+Now, it is rewritten in Perl and downloads all dependencies itself. The only
+requirement is <code>pg\_config</code> on <code>PATH</code>, to run it in such way use <code>--build</code>
+option. The tool clones git repo <code>pg_bsd_indent</code>, downloads typedefs, indents
+and then deletes repo. If the previous run was not successful, the repository
+will stay in the <code>src/tools/pgindent/pg_bsd_indent</code> and will cause an error for
+git clone command, just remove it. The other point it generates files for
+typedefs, do not forget to delete them before commit. To indent single file
+run:</p>
+<div class="highlight"><pre><span></span>src/tools/pgindent/pgindent --build filename
 </pre></div>
 
 
-<p>To indent all files in current directory:</p>
-<div class="highlight"><pre><span></span>src/tools/pgindent/pgindent
+<p>To indent all files in current directory and subdirectories:</p>
+<div class="highlight"><pre><span></span>src/tools/pgindent/pgindent --build
 </pre></div>
 
 

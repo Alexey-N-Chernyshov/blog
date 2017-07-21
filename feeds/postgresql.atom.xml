@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Alexey Chernyshov's blog - PostgreSQL</title><link href="https://alexey-n-chernyshov.github.io/blog/" rel="alternate"></link><link href="https://alexey-n-chernyshov.github.io/blog/feeds/postgresql.atom.xml" rel="self"></link><id>https://alexey-n-chernyshov.github.io/blog/</id><updated>2017-06-30T11:00:00+03:00</updated><entry><title>pgindent</title><link href="https://alexey-n-chernyshov.github.io/blog/pgindent.html" rel="alternate"></link><published>2017-06-30T11:00:00+03:00</published><updated>2017-06-30T11:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-30:/blog/pgindent.html</id><summary type="html">&lt;p&gt;New pgindent tool&lt;/p&gt;</summary><content type="html">&lt;p&gt;The PostgreSQL code has really confusing indents. For the help for programmers,
-there is a tool named pgindent. Earlier it was written in C and has had a set
-of dependencies, the installation was tedious. Now, it is rewritten in Perl and
-don't require anything to run it.
-To indent single file run:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;src/tools/pgindent/pgindent filename
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Alexey Chernyshov's blog - PostgreSQL</title><link href="https://alexey-n-chernyshov.github.io/blog/" rel="alternate"></link><link href="https://alexey-n-chernyshov.github.io/blog/feeds/postgresql.atom.xml" rel="self"></link><id>https://alexey-n-chernyshov.github.io/blog/</id><updated>2017-07-21T16:00:00+03:00</updated><entry><title>pgindent</title><link href="https://alexey-n-chernyshov.github.io/blog/pgindent.html" rel="alternate"></link><published>2017-06-30T11:00:00+03:00</published><updated>2017-07-21T16:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-30:/blog/pgindent.html</id><summary type="html">&lt;p&gt;New pgindent tool&lt;/p&gt;</summary><content type="html">&lt;p&gt;The PostgreSQL code has really confusing indents. For the help for programmers,
+there is a tool named pgindent located at &lt;code&gt;src/tools/pgindent&lt;/code&gt;. Earlier it was
+written in C and has had a set of dependencies, the installation was tedious.
+Now, it is rewritten in Perl and downloads all dependencies itself. The only
+requirement is &lt;code&gt;pg\_config&lt;/code&gt; on &lt;code&gt;PATH&lt;/code&gt;, to run it in such way use &lt;code&gt;--build&lt;/code&gt;
+option. The tool clones git repo &lt;code&gt;pg_bsd_indent&lt;/code&gt;, downloads typedefs, indents
+and then deletes repo. If the previous run was not successful, the repository
+will stay in the &lt;code&gt;src/tools/pgindent/pg_bsd_indent&lt;/code&gt; and will cause an error for
+git clone command, just remove it. The other point it generates files for
+typedefs, do not forget to delete them before commit. To indent single file
+run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;src/tools/pgindent/pgindent --build filename
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;To indent all files in current directory:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;src/tools/pgindent/pgindent
+&lt;p&gt;To indent all files in current directory and subdirectories:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;src/tools/pgindent/pgindent --build
 &lt;/pre&gt;&lt;/div&gt;
 
 
