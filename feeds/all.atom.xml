@@ -3,7 +3,7 @@
 there is a tool named pgindent located at &lt;code&gt;src/tools/pgindent&lt;/code&gt;. Earlier it was
 written in C and has had a set of dependencies, the installation was tedious.
 Now, it is rewritten in Perl and downloads all dependencies itself. The only
-requirement is &lt;code&gt;pg\_config&lt;/code&gt; on &lt;code&gt;PATH&lt;/code&gt;, to run it in such way use &lt;code&gt;--build&lt;/code&gt;
+requirement is &lt;code&gt;pg_config&lt;/code&gt; on &lt;code&gt;PATH&lt;/code&gt;, to run it in such way use &lt;code&gt;--build&lt;/code&gt;
 option. The tool clones git repo &lt;code&gt;pg_bsd_indent&lt;/code&gt;, downloads typedefs, indents
 and then deletes repo. If the previous run was not successful, the repository
 will stay in the &lt;code&gt;src/tools/pgindent/pg_bsd_indent&lt;/code&gt; and will cause an error for

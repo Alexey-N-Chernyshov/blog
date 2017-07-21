@@ -47,7 +47,7 @@
 there is a tool named pgindent located at <code>src/tools/pgindent</code>. Earlier it was
 written in C and has had a set of dependencies, the installation was tedious.
 Now, it is rewritten in Perl and downloads all dependencies itself. The only
-requirement is <code>pg\_config</code> on <code>PATH</code>, to run it in such way use <code>--build</code>
+requirement is <code>pg_config</code> on <code>PATH</code>, to run it in such way use <code>--build</code>
 option. The tool clones git repo <code>pg_bsd_indent</code>, downloads typedefs, indents
 and then deletes repo. If the previous run was not successful, the repository
 will stay in the <code>src/tools/pgindent/pg_bsd_indent</code> and will cause an error for
