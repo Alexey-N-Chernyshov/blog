@@ -153,9 +153,9 @@ in &lt;code&gt;content&lt;/code&gt; directory. There are two types of content:&l
 &lt;p&gt;Comments are provided by &lt;a href="https://disqus.com"&gt;Disqus&lt;/a&gt;. Head to the website and
 create an account. Here you should copy website name which is equal to the
 string before &lt;code&gt;.disqus&lt;/code&gt; in URL of your account
-(i.e. https://alexey-chernyshovs-blog.disqus.com)...
-&lt;img alt="alt text" src="/images/disqus_website_name.png" title="Website name"&gt;
-and paste to pelicanconf.py&lt;/p&gt;
+(i.e. https://alexey-chernyshovs-blog.disqus.com)...&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://alexey-n-chernyshov.github.io/blog/images/disqus_website_name.png" title="Website name"&gt;&lt;/p&gt;
+&lt;p&gt;... and paste to pelicanconf.py&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DISQUS_SITENAME = &amp;#39;alexey-chernyshovs-blog&amp;#39;
 &lt;/pre&gt;&lt;/div&gt;
 
