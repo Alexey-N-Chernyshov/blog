@@ -39,15 +39,27 @@
         </address>
 <p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a>.</p>
 <p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/qt-creator.html">Qt Creator</a> <a href="https://alexey-n-chernyshov.github.io/blog/tag/postgresql.html">PostgreSQL</a> </p>
-</footer><!-- /.post-info -->      <p>PostgreSQL code is a lot about of macros, which hard to track. Qt Creator allows going to macros declaration on Ctrl+Click.</p>
+</footer><!-- /.post-info -->      <p>PostgreSQL code is a lot about of macros, which hard to track. Qt Creator
+allows going to macros declaration on Ctrl+Click.</p>
 <p>Initial configuration is extremely simple, just set tab width as 4 symbols.
-The PostgreSQL code standard defines tab width as 4 symbols and uses a mix of tabs and spaces. It is awful. For example, the definition of a pointer is aligned with 3 spaces:</p>
+The PostgreSQL code standard defines tab width as 4 symbols and uses a mix of
+tabs and spaces. It is awful. For example, the definition of a pointer is
+aligned with 3 spaces:</p>
 <div class="highlight"><pre><span></span>int     i;
 int    *j;
 </pre></div>
 
 
-<p>The next step is to import project. Follow <code>New File or Project -&gt; Import Project -&gt; Import Existing Project</code> specify project name and location, and add to filters <em>.sql, </em>.sgml, and *.control. Qt Creator adds project files:</p>
+<p>Now disallow Qt Creator to substitute tab with whitespaces while edit. Go to
+<code>Tools-&gt;Options...-&gt;C++</code> and create a new settings.</p>
+<p><img alt="alt text" src="https://alexey-n-chernyshov.github.io/blog/images/qtcreator/qt-cpp-code-style.png" title="C++ code style"></p>
+<p>Choose <code>mixed</code> for Tab policy, set Tab width to 4 and choose Align continuation
+lines <code>With Regular Indent</code>.</p>
+<p><img alt="alt text" src="https://alexey-n-chernyshov.github.io/blog/images/qtcreator/qt-cpp-tabs.png" title="C++ Tabs"></p>
+<p>The next step is to import project. Follow
+<code>New File or Project-&gt;Import Project-&gt;Import Existing Project</code>, specify project
+name and location, and add to filters <em>.sql, </em>.sgml, and *.control. Qt Creator
+adds project files:</p>
 <div class="highlight"><pre><span></span># Qt Creator files
 postgresql.config
 postgresql.creator
@@ -58,7 +70,10 @@ postgresql.includes
 </pre></div>
 
 
-<p>You do not want these files to be committed into repository either excluded with .gitignore file since they are specific to a particular workflow. Thus, the best approach is to add these files to <code>.git/info/exclude</code> file. This file has the same format as any <code>.gitignore</code>.</p>
+<p>You do not want these files to be committed into repository either excluded with
+.gitignore file since they are specific to a particular workflow. Thus, the best
+approach is to add these files to <code>.git/info/exclude</code> file. This file has the
+same format as any <code>.gitignore</code>.</p>
 <p>Ok, you are ready to work with PostgreSQL.</p>
     </div><!-- /.entry-content -->
     <div class="comments">

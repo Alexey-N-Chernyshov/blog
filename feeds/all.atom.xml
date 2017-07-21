@@ -169,15 +169,27 @@ string before &lt;code&gt;.disqus&lt;/code&gt; in URL of your account
 &lt;p&gt;But since Disqus doesn’t recognize the local address, this setting should go
 to publishconf.py.&lt;/p&gt;
 &lt;h1&gt;Further work&lt;/h1&gt;
-&lt;p&gt;Themes will be considered further.&lt;/p&gt;</content><category term="Pelican"></category><category term="blog"></category></entry><entry><title>Qt Creator configuration for PostrgreSQL development</title><link href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html" rel="alternate"></link><published>2017-06-25T16:00:00+03:00</published><updated>2017-06-25T16:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-25:/blog/qt-creator-configuration-for-postrgresql-development.html</id><summary type="html">&lt;p&gt;Qt Creator configuration for PostgreSQL development&lt;/p&gt;</summary><content type="html">&lt;p&gt;PostgreSQL code is a lot about of macros, which hard to track. Qt Creator allows going to macros declaration on Ctrl+Click.&lt;/p&gt;
+&lt;p&gt;Themes will be considered further.&lt;/p&gt;</content><category term="Pelican"></category><category term="blog"></category></entry><entry><title>Qt Creator configuration for PostrgreSQL development</title><link href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html" rel="alternate"></link><published>2017-06-25T16:00:00+03:00</published><updated>2017-06-25T16:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-25:/blog/qt-creator-configuration-for-postrgresql-development.html</id><summary type="html">&lt;p&gt;Qt Creator configuration for PostgreSQL development&lt;/p&gt;</summary><content type="html">&lt;p&gt;PostgreSQL code is a lot about of macros, which hard to track. Qt Creator
+allows going to macros declaration on Ctrl+Click.&lt;/p&gt;
 &lt;p&gt;Initial configuration is extremely simple, just set tab width as 4 symbols.
-The PostgreSQL code standard defines tab width as 4 symbols and uses a mix of tabs and spaces. It is awful. For example, the definition of a pointer is aligned with 3 spaces:&lt;/p&gt;
+The PostgreSQL code standard defines tab width as 4 symbols and uses a mix of
+tabs and spaces. It is awful. For example, the definition of a pointer is
+aligned with 3 spaces:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;int     i;
 int    *j;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;The next step is to import project. Follow &lt;code&gt;New File or Project -&amp;gt; Import Project -&amp;gt; Import Existing Project&lt;/code&gt; specify project name and location, and add to filters &lt;em&gt;.sql, &lt;/em&gt;.sgml, and *.control. Qt Creator adds project files:&lt;/p&gt;
+&lt;p&gt;Now disallow Qt Creator to substitute tab with whitespaces while edit. Go to
+&lt;code&gt;Tools-&amp;gt;Options...-&amp;gt;C++&lt;/code&gt; and create a new settings.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://alexey-n-chernyshov.github.io/blog/images/qtcreator/qt-cpp-code-style.png" title="C++ code style"&gt;&lt;/p&gt;
+&lt;p&gt;Choose &lt;code&gt;mixed&lt;/code&gt; for Tab policy, set Tab width to 4 and choose Align continuation
+lines &lt;code&gt;With Regular Indent&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://alexey-n-chernyshov.github.io/blog/images/qtcreator/qt-cpp-tabs.png" title="C++ Tabs"&gt;&lt;/p&gt;
+&lt;p&gt;The next step is to import project. Follow
+&lt;code&gt;New File or Project-&amp;gt;Import Project-&amp;gt;Import Existing Project&lt;/code&gt;, specify project
+name and location, and add to filters &lt;em&gt;.sql, &lt;/em&gt;.sgml, and *.control. Qt Creator
+adds project files:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# Qt Creator files
 postgresql.config
 postgresql.creator
@@ -188,5 +200,8 @@ postgresql.includes
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;You do not want these files to be committed into repository either excluded with .gitignore file since they are specific to a particular workflow. Thus, the best approach is to add these files to &lt;code&gt;.git/info/exclude&lt;/code&gt; file. This file has the same format as any &lt;code&gt;.gitignore&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;You do not want these files to be committed into repository either excluded with
+.gitignore file since they are specific to a particular workflow. Thus, the best
+approach is to add these files to &lt;code&gt;.git/info/exclude&lt;/code&gt; file. This file has the
+same format as any &lt;code&gt;.gitignore&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Ok, you are ready to work with PostgreSQL.&lt;/p&gt;</content><category term="Qt Creator"></category><category term="PostgreSQL"></category></entry></feed>
