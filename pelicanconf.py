@@ -22,14 +22,10 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Blogroll
-LINKS = (('Pelican', 'http://getpelican.com/'),
-         ('Python.org', 'http://python.org/'),
-         ('Jinja2', 'http://jinja.pocoo.org/'),
-         ('You can modify those links in your config file', '#'),)
+LINKS = (('Alexey Chernyshov\'s personal page', 'https://alexey-n-chernyshov.github.io/'),)
 
 # Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+SOCIAL = (('My github', 'https://github.com/Alexey-N-Chernyshov'),)
 
 DEFAULT_PAGINATION = 10
 
