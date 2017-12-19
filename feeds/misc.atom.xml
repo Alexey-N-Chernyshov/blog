@@ -140,7 +140,7 @@ in &lt;code&gt;content&lt;/code&gt; directory. There are two types of content:&l
 create an account. Here you should copy website name which is equal to the
 string before &lt;code&gt;.disqus&lt;/code&gt; in URL of your account
 (i.e. https://alexey-chernyshovs-blog.disqus.com)...&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://alexey-n-chernyshov.github.io/blog/images/disqus_website_name.png" title="Website name"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="{filename}/images/disqus_website_name.png" title="Website name"&gt;&lt;/p&gt;
 &lt;p&gt;... and paste to pelicanconf.py&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;DISQUS_SITENAME = &amp;#39;alexey-chernyshovs-blog&amp;#39;
 &lt;/pre&gt;&lt;/div&gt;
@@ -162,10 +162,10 @@ int    *j;
 
 &lt;p&gt;Now disallow Qt Creator to substitute tab with whitespaces while edit. Go to
 &lt;code&gt;Tools-&amp;gt;Options...-&amp;gt;C++&lt;/code&gt; and create a new settings.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://alexey-n-chernyshov.github.io/blog/images/qtcreator/qt-cpp-code-style.png" title="C++ code style"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="{filename}/images/qtcreator/qt-cpp-code-style.png" title="C++ code style"&gt;&lt;/p&gt;
 &lt;p&gt;Choose &lt;code&gt;mixed&lt;/code&gt; for Tab policy, set Tab width to 4 and choose Align continuation
 lines &lt;code&gt;With Regular Indent&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="alt text" src="https://alexey-n-chernyshov.github.io/blog/images/qtcreator/qt-cpp-tabs.png" title="C++ Tabs"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="{filename}/images/qtcreator/qt-cpp-tabs.png" title="C++ Tabs"&gt;&lt;/p&gt;
 &lt;p&gt;The next step is to import project. Follow
 &lt;code&gt;New File or Project-&amp;gt;Import Project-&amp;gt;Import Existing Project&lt;/code&gt;, specify project
 name and location, and add to filters &lt;em&gt;.sql, &lt;/em&gt;.sgml, and *.control. Qt Creator
