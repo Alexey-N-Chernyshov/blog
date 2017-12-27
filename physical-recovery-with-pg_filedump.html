@@ -45,7 +45,6 @@
 <p><code>pg_filedump</code> is a utility to dump contents of heap/index/control files. Some time ago it was enhanced to be suitable for physical recovery data from database heap files. Also recently there was added an ability to recover TOAST values and skip deleted values to the <code>pg_filedump</code> to be of full-value recovery utility.</p>
 <h3>Behind the scene</h3>
 <p><a href="https://www.postgresql.org/docs/current/static/storage-file-layout.html">Tables in Postgres</a> are stored in heap files divided into segments which are gigabyte-sized by default. Segments consist of pages (8kb by default) which stores data row by row. If an attribute is too large, the TOAST mechanism takes place. Simply put, it compresses, slices data into chunks and stores them in the external table. When a transaction deletes some data, actually, it is not deleted from the file immediately and can be restored. That’s <a href="http://momjian.us/main/writings/pgsql/mvcc.pdf">how MVCC works</a>.</p>
-<p><img alt="alt text" src="images/pg_heap_file_page.png"></p>
 <h2>Usage</h2>
 <p>Let’s see the facilities of <code>pg_filedump</code>.</p>
 <h3>Install</h3>
