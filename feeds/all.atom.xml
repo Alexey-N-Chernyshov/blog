@@ -131,11 +131,13 @@ COPY: timestamp
 
 
 &lt;h2&gt;Links&lt;/h2&gt;
-&lt;p&gt;&lt;a href="https://wiki.postgresql.org/wiki/Pg_filedump"&gt;Wiki page on pg_filedump&lt;/a&gt;
-&lt;a href="https://blog.dbi-services.com/displaying-the-contents-of-a-postgresql-data-file-with-pg_filedump/"&gt;More on pg_filedump. Find it interesting&lt;/a&gt;
-&lt;a href="https://afiskon.github.io/static/2017/pg-filedump-pgday2017.pdf"&gt;Slides about pg_filedump on PG Day'17&lt;/a&gt;
-&lt;a href="https://habrahabr.ru/company/postgrespro/blog/319770/"&gt;Article in Russian, part 1&lt;/a&gt;
-&lt;a href="https://habrahabr.ru/company/postgrespro/blog/323644/"&gt;Article in Russian, part 2&lt;/a&gt;&lt;/p&gt;</content><category term="PostgreSQL"></category></entry><entry><title>pgindent</title><link href="https://alexey-n-chernyshov.github.io/blog/pgindent.html" rel="alternate"></link><published>2017-06-30T11:00:00+03:00</published><updated>2017-07-21T16:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-30:/blog/pgindent.html</id><summary type="html">&lt;p&gt;New pgindent tool&lt;/p&gt;</summary><content type="html">&lt;p&gt;The PostgreSQL code has really confusing indents. For the help for programmers,
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://wiki.postgresql.org/wiki/Pg_filedump"&gt;Wiki page on pg_filedump&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://blog.dbi-services.com/displaying-the-contents-of-a-postgresql-data-file-with-pg_filedump/"&gt;More on pg_filedump. Find it interesting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://afiskon.github.io/static/2017/pg-filedump-pgday2017.pdf"&gt;Slides about pg_filedump on PG Day'17&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://habrahabr.ru/company/postgrespro/blog/319770/"&gt;Article in Russian, part 1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://habrahabr.ru/company/postgrespro/blog/323644/"&gt;Article in Russian, part 2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><category term="PostgreSQL"></category></entry><entry><title>pgindent</title><link href="https://alexey-n-chernyshov.github.io/blog/pgindent.html" rel="alternate"></link><published>2017-06-30T11:00:00+03:00</published><updated>2017-07-21T16:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-30:/blog/pgindent.html</id><summary type="html">&lt;p&gt;New pgindent tool&lt;/p&gt;</summary><content type="html">&lt;p&gt;The PostgreSQL code has really confusing indents. For the help for programmers,
 there is a tool named pgindent located at &lt;code&gt;src/tools/pgindent&lt;/code&gt;. Earlier it was
 written in C and has had a set of dependencies, the installation was tedious.
 Now, it is rewritten in Perl and downloads all dependencies itself. The only

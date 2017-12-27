@@ -131,11 +131,13 @@ COPY: timestamp
 
 
 &lt;h2&gt;Links&lt;/h2&gt;
-&lt;p&gt;&lt;a href="https://wiki.postgresql.org/wiki/Pg_filedump"&gt;Wiki page on pg_filedump&lt;/a&gt;
-&lt;a href="https://blog.dbi-services.com/displaying-the-contents-of-a-postgresql-data-file-with-pg_filedump/"&gt;More on pg_filedump. Find it interesting&lt;/a&gt;
-&lt;a href="https://afiskon.github.io/static/2017/pg-filedump-pgday2017.pdf"&gt;Slides about pg_filedump on PG Day'17&lt;/a&gt;
-&lt;a href="https://habrahabr.ru/company/postgrespro/blog/319770/"&gt;Article in Russian, part 1&lt;/a&gt;
-&lt;a href="https://habrahabr.ru/company/postgrespro/blog/323644/"&gt;Article in Russian, part 2&lt;/a&gt;&lt;/p&gt;</content><category term="PostgreSQL"></category></entry><entry><title>Static blog with Pelican on GitHub Pages</title><link href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html" rel="alternate"></link><published>2017-06-29T10:00:00+03:00</published><updated>2017-06-29T10:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-29:/blog/pelican-blog.html</id><summary type="html">&lt;p&gt;How to create blog with Pelican and deploy it on GitHub Pages&lt;/p&gt;</summary><content type="html">&lt;p&gt;This &lt;a href="http://eax.me/pelican/"&gt;post&lt;/a&gt; and circumstances make me a blogger. Here I
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://wiki.postgresql.org/wiki/Pg_filedump"&gt;Wiki page on pg_filedump&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://blog.dbi-services.com/displaying-the-contents-of-a-postgresql-data-file-with-pg_filedump/"&gt;More on pg_filedump. Find it interesting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://afiskon.github.io/static/2017/pg-filedump-pgday2017.pdf"&gt;Slides about pg_filedump on PG Day'17&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://habrahabr.ru/company/postgrespro/blog/319770/"&gt;Article in Russian, part 1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://habrahabr.ru/company/postgrespro/blog/323644/"&gt;Article in Russian, part 2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><category term="PostgreSQL"></category></entry><entry><title>Static blog with Pelican on GitHub Pages</title><link href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html" rel="alternate"></link><published>2017-06-29T10:00:00+03:00</published><updated>2017-06-29T10:00:00+03:00</updated><author><name>Alexey Chernyshov</name></author><id>tag:alexey-n-chernyshov.github.io,2017-06-29:/blog/pelican-blog.html</id><summary type="html">&lt;p&gt;How to create blog with Pelican and deploy it on GitHub Pages&lt;/p&gt;</summary><content type="html">&lt;p&gt;This &lt;a href="http://eax.me/pelican/"&gt;post&lt;/a&gt; and circumstances make me a blogger. Here I
 will share my first experience in a creation and deployment of a static blog. I
 use &lt;a href="http://docs.getpelican.com/en/stable/#"&gt;Pelican&lt;/a&gt; to generate the site and
 &lt;a href="https://pages.github.com/"&gt;GitHub Pages&lt;/a&gt; to host it.&lt;/p&gt;
