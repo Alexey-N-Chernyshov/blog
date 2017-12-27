@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Alexey Chernyshov's blog</title>
+        <title>Physical recovery with pg_filedump</title>
         <link rel="stylesheet" href="https://alexey-n-chernyshov.github.io/blog/theme/css/main.css" />
         <link href="https://alexey-n-chernyshov.github.io/blog/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Alexey Chernyshov's blog Atom Feed" />
 
@@ -16,14 +16,19 @@
                 <h1><a href="https://alexey-n-chernyshov.github.io/blog/">Alexey Chernyshov's blog </a></h1>
                 <nav><ul>
                     <li><a href="https://alexey-n-chernyshov.github.io/blog/pages/about.html">About</a></li>
-                    <li><a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a></li>
+                    <li class="active"><a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a></li>
                     <li><a href="https://alexey-n-chernyshov.github.io/blog/category/postgresql.html">PostgreSQL</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://alexey-n-chernyshov.github.io/blog/physical-recovery-with-pg_filedump.html" rel="bookmark"
+           title="Permalink to Physical recovery with pg_filedump">Physical recovery with pg_filedump</a></h1>
+    </header>
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="https://alexey-n-chernyshov.github.io/blog/physical-recovery-with-pg_filedump.html">Physical recovery with pg_filedump</a></h1>
+    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2017-12-27T12:00:00+03:00">
                 Published: 2017-12-27
@@ -34,7 +39,7 @@
         </address>
 <p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a>.</p>
 <p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/postgresql.html">PostgreSQL</a> </p>
-</footer><!-- /.post-info --><h1>Physical recovery with pg_filedump</h1>
+</footer><!-- /.post-info -->      <h1>Physical recovery with pg_filedump</h1>
 <p>If you can’t start your Postgres database and want to recover latest data from database heap files or want to recover just deleted or updated values, <code>pg_filedump</code> will help you.</p>
 <h2>About</h2>
 <p><code>pg_filedump</code> is a utility to dump contents of heap/index/control files. Some time ago it was enhanced to be suitable for physical recovery data from database heap files. Also recently there was added an ability to recover TOAST values and skip deleted values to the <code>pg_filedump</code> to be of full-value recovery utility.</p>
@@ -171,84 +176,26 @@ COPY: timestamp
 <a href="https://blog.dbi-services.com/displaying-the-contents-of-a-postgresql-data-file-with-pg_filedump/">More on pg_filedump. Find it interesting</a>
 <a href="https://afiskon.github.io/static/2017/pg-filedump-pgday2017.pdf">Slides about pg_filedump on PG Day'17</a>
 <a href="https://habrahabr.ru/company/postgrespro/blog/319770/">Article in Russian, part 1</a>
-<a href="https://habrahabr.ru/company/postgrespro/blog/323644/">Article in Russian, part 2</a></p><p>There are <a href="https://alexey-n-chernyshov.github.io/blog/physical-recovery-with-pg_filedump.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<a href="https://habrahabr.ru/company/postgrespro/blog/323644/">Article in Russian, part 2</a></p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'alexey-chernyshovs-blog';
+        var disqus_identifier = 'physical-recovery-with-pg_filedump.html';
+        var disqus_url = 'https://alexey-n-chernyshov.github.io/blog/physical-recovery-with-pg_filedump.html';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//alexey-chernyshovs-blog.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://alexey-n-chernyshov.github.io/blog/pgindent.html" rel="bookmark"
-                           title="Permalink to pgindent">pgindent</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2017-06-30T11:00:00+03:00">
-                Published: 2017-06-30
-        </abbr>
-		<br />
-        <abbr class="modified" title="2017-07-21T16:00:00+03:00">
-                Updated: 2017-07-21
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://alexey-n-chernyshov.github.io/blog/author/alexey-chernyshov.html">Alexey Chernyshov</a>
-        </address>
-<p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/postgresql.html">PostgreSQL</a>.</p>
-<p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/postgresql.html">PostgreSQL</a> </p>
-</footer><!-- /.post-info -->                <p>New pgindent tool</p>
-                <a class="readmore" href="https://alexey-n-chernyshov.github.io/blog/pgindent.html">read more</a>
-<p>There are <a href="https://alexey-n-chernyshov.github.io/blog/pgindent.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html" rel="bookmark"
-                           title="Permalink to Static blog with Pelican on GitHub Pages">Static blog with Pelican on GitHub Pages</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2017-06-29T10:00:00+03:00">
-                Published: 2017-06-29
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://alexey-n-chernyshov.github.io/blog/author/alexey-chernyshov.html">Alexey Chernyshov</a>
-        </address>
-<p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a>.</p>
-<p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/pelican.html">Pelican</a> <a href="https://alexey-n-chernyshov.github.io/blog/tag/blog.html">blog</a> </p>
-</footer><!-- /.post-info -->                <p>How to create blog with Pelican and deploy it on GitHub Pages</p>
-                <a class="readmore" href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html">read more</a>
-<p>There are <a href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html" rel="bookmark"
-                           title="Permalink to Qt Creator configuration for PostrgreSQL development">Qt Creator configuration for PostrgreSQL development</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2017-06-25T16:00:00+03:00">
-                Published: 2017-06-25
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://alexey-n-chernyshov.github.io/blog/author/alexey-chernyshov.html">Alexey Chernyshov</a>
-        </address>
-<p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a>.</p>
-<p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/qt-creator.html">Qt Creator</a> <a href="https://alexey-n-chernyshov.github.io/blog/tag/postgresql.html">PostgreSQL</a> </p>
-</footer><!-- /.post-info -->                <p>Qt Creator configuration for PostgreSQL development</p>
-                <a class="readmore" href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html">read more</a>
-<p>There are <a href="https://alexey-n-chernyshov.github.io/blog/qt-creator-configuration-for-postrgresql-development.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>

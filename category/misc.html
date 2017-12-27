@@ -23,7 +23,168 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html">Static blog with Pelican on GitHub Pages</a></h1>
+                    <h1 class="entry-title"><a href="https://alexey-n-chernyshov.github.io/blog/physical-recovery-with-pg_filedump.html">Physical recovery with pg_filedump</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2017-12-27T12:00:00+03:00">
+                Published: 2017-12-27
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://alexey-n-chernyshov.github.io/blog/author/alexey-chernyshov.html">Alexey Chernyshov</a>
+        </address>
+<p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a>.</p>
+<p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/postgresql.html">PostgreSQL</a> </p>
+</footer><!-- /.post-info --><h1>Physical recovery with pg_filedump</h1>
+<p>If you can’t start your Postgres database and want to recover latest data from database heap files or want to recover just deleted or updated values, <code>pg_filedump</code> will help you.</p>
+<h2>About</h2>
+<p><code>pg_filedump</code> is a utility to dump contents of heap/index/control files. Some time ago it was enhanced to be suitable for physical recovery data from database heap files. Also recently there was added an ability to recover TOAST values and skip deleted values to the <code>pg_filedump</code> to be of full-value recovery utility.</p>
+<h3>Behind the scene</h3>
+<p><a href="https://www.postgresql.org/docs/current/static/storage-file-layout.html">Tables in Postgres</a> are stored in heap files divided into segments which are gigabyte-sized by default. Segments consist of pages (8kb by default) which stores data row by row. If an attribute is too large, the TOAST mechanism takes place. Simply put, it compresses, slices data into chunks and stores them in the external table. When a transaction deletes some data, actually, it is not deleted from the file immediately and can be restored. That’s <a href="http://momjian.us/main/writings/pgsql/mvcc.pdf">how MVCC works</a>.</p>
+<p><img alt="alt text" src="{filename}/images/pg_heap_file_page.png"></p>
+<h2>Usage</h2>
+<p>Let’s see the facilities of <code>pg_filedump</code>.</p>
+<h3>Install</h3>
+<div class="highlight"><pre><span></span>It’s easy to build.
+git clone git://git.postgresql.org/git/pg_filedump.git
+cd pg_filedump
+make
+</pre></div>
+
+
+<h3>Example</h3>
+<p>Let’s create test table and populate it with data from psql. I added large text from files with size of couple KB with <code>pg_read_file</code> to demonstrate TOAST’ed data. Checkpoint at the end flushes data files to the disk:</p>
+<div class="highlight"><pre><span></span># create table my_table(i int, t timestamp, content text);
+# insert into my_table values (1, now(), &#39;some text&#39;);
+# insert into my_table values (2, now(), ‘to be deleted’);
+# insert into my_table values (3, now(), pg_read_file(&#39;file_to_delete.txt&#39;));
+# insert into my_table values (4, now(), pg_read_file(&#39;some_file.txt&#39;));
+# checkpoint;
+</pre></div>
+
+
+<p>We can get relation id in an easy way as (we’ll consider further the more general way to know the heap file name):</p>
+<div class="highlight"><pre><span></span>select relfilenode from pg_class where relname = &#39;my_table&#39;;
+ relfilenode 
+-------------
+       16408
+(1 row)
+</pre></div>
+
+
+<p>We can find it by name.</p>
+<div class="highlight"><pre><span></span>find /path/to/db/ -type f | grep 16408
+</pre></div>
+
+
+<p>And dump the file. We should pass types of the table with <code>-D</code> option.</p>
+<div class="highlight"><pre><span></span>./pg_filedump -D int,timestamp,text /path/to/database/base/12445/16408
+*******************************************************************
+* PostgreSQL File/Block Formatted Dump Utility - Version 10.0
+*
+* File: /var/lib/postgresql/9.6/main/base/12445/16408
+* Options used: -D int,timestamp,text 
+*
+* Dump created on: Mon Dec 25 18:38:02 2017
+*******************************************************************
+
+Block    0 ********************************************************
+&lt;Header&gt; -----
+ Block Offset: 0x00000000         Offsets: Lower      40 (0x0028)
+ Block: Size 8192  Version    4            Upper    7952 (0x1f10)
+ LSN:  logid      0 recoff 0x0157e770      Special  8192 (0x2000)
+ Items:    4                      Free Space: 7912
+ Checksum: 0x0000  Prune XID: 0x0000027d  Flags: 0x0000 ()
+ Length (including item array): 40
+
+&lt;Data&gt; ------ 
+ Item   1 -- Length:   50  Offset: 8136 (0x1fc8)  Flags: NORMAL
+COPY: 1 2017-12-25 18:31:03.547059  some text
+ Item   2 -- Length:   54  Offset: 8080 (0x1f90)  Flags: NORMAL
+COPY: 2 2017-12-25 18:31:21.451178  to be deleted
+ Item   3 -- Length:   58  Offset: 8016 (0x1f50)  Flags: NORMAL
+COPY: 3 2017-12-25 18:32:00.895268  (TOASTED)
+ Item   4 -- Length:   58  Offset: 7952 (0x1f10)  Flags: NORMAL
+COPY: 4 2017-12-25 18:32:04.745484  (TOASTED)
+</pre></div>
+
+
+<p>The data we are interested in is after COPY. Option -o skips deleted data and -t option outputs TOAST’ed values.</p>
+<div class="highlight"><pre><span></span>./pg_filedump -o -D int,timestamp,text /var/lib/postgresql/9.6/main/base/12445/16408 | grep COPY
+
+COPY: 1 2017-12-25 18:31:03.547059  some text
+COPY: 4 2017-12-25 18:32:04.745484      very large string
+</pre></div>
+
+
+<p>But what if we don’t know the segment number or the database schema? For example, we cannot start Postgres instance. The Postgres stores all the data about tables in the table named <code>pg_class</code> with relfilenode id 1259. So, we can get the segment number by the name of our table. Here <code>~</code> in <code>-D</code> argument means the rest of the row we do not consider.</p>
+<div class="highlight"><pre><span></span>./pg_filedump -D name,oid,oid,oid,oid,oid,oid,~ /path/to/database/1259 | grep COPY | grep my_table
+COPY: my_table  2200    16410   0   10  0   16408
+</pre></div>
+
+
+<p>Where the last number is our segment number 16408. We can obtain schema from the table name <code>pg_attribute</code> with relfilenode 1249 as well. The third column is an oid of the attribute type.</p>
+<div class="highlight"><pre><span></span>./pg_filedump -ot -D oid,name,oid,int,smallint,~ /var/lib/postgresql/9.6/main/base/12445/1249 | grep 16408
+COPY: 16408 i   23  -1  4
+COPY: 16408 t   1114    -1  8
+COPY: 16408 content 25  -1  -1
+COPY: 16408 ctid    27  0   6
+COPY: 16408 xmin    28  0   4
+COPY: 16408 cmin    29  0   4
+COPY: 16408 xmax    28  0   4
+COPY: 16408 cmax    29  0   4
+COPY: 16408 tableoid    26  0   4
+</pre></div>
+
+
+<p>The next step is to get types by oids which are 23, 25 and 1114.</p>
+<div class="highlight"><pre><span></span>./pg_filedump -i -D name,~ /path/to/database/1247 | grep -A5 -E &#39;OID: (23|25|1114)&#39;
+  XMIN: 1  XMAX: 0  CID|XVAC: 0  OID: 23
+  Block Id: 0  linp Index: 8   Attributes: 30   Size: 32
+  infomask: 0x0909 (HASNULL|HASOID|XMIN_COMMITTED|XMAX_INVALID) 
+  t_bits: [0]: 0xff [1]: 0xff [2]: 0xff [3]: 0x07 
+
+COPY: int4
+--
+  XMIN: 1  XMAX: 0  CID|XVAC: 0  OID: 25
+  Block Id: 0  linp Index: 10   Attributes: 30   Size: 32
+  infomask: 0x0909 (HASNULL|HASOID|XMIN_COMMITTED|XMAX_INVALID) 
+  t_bits: [0]: 0xff [1]: 0xff [2]: 0xff [3]: 0x07 
+
+COPY: text
+--
+  XMIN: 1  XMAX: 0  CID|XVAC: 0  OID: 1114
+  Block Id: 1  linp Index: 39   Attributes: 30   Size: 32
+  infomask: 0x0909 (HASNULL|HASOID|XMIN_COMMITTED|XMAX_INVALID) 
+  t_bits: [0]: 0xff [1]: 0xff [2]: 0xff [3]: 0x07 
+
+COPY: timestamp
+</pre></div>
+
+
+<p>Here we know the relfilenode of the table we are looking for and the schema and can easily dump the content of the table.</p>
+<div class="highlight"><pre><span></span>./pg_filedump -D int,timestamp,text /path/to/database/base/16408
+</pre></div>
+
+
+<h2>Links</h2>
+<p><a href="https://wiki.postgresql.org/wiki/Pg_filedump">Wiki page on pg_filedump</a>
+<a href="https://blog.dbi-services.com/displaying-the-contents-of-a-postgresql-data-file-with-pg_filedump/">More on pg_filedump. Find it interesting</a>
+<a href="https://afiskon.github.io/static/2017/pg-filedump-pgday2017.pdf">Slides about pg_filedump on PG Day'17</a>
+<a href="https://habrahabr.ru/company/postgrespro/blog/319770/">Article in Russian, part 1</a>
+<a href="https://habrahabr.ru/company/postgrespro/blog/323644/">Article in Russian, part 2</a></p><p>There are <a href="https://alexey-n-chernyshov.github.io/blog/physical-recovery-with-pg_filedump.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html" rel="bookmark"
+                           title="Permalink to Static blog with Pelican on GitHub Pages">Static blog with Pelican on GitHub Pages</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2017-06-29T10:00:00+03:00">
                 Published: 2017-06-29
@@ -34,162 +195,10 @@
         </address>
 <p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a>.</p>
 <p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/pelican.html">Pelican</a> <a href="https://alexey-n-chernyshov.github.io/blog/tag/blog.html">blog</a> </p>
-</footer><!-- /.post-info --><p>This <a href="http://eax.me/pelican/">post</a> and circumstances make me a blogger. Here I
-will share my first experience in a creation and deployment of a static blog. I
-use <a href="http://docs.getpelican.com/en/stable/#">Pelican</a> to generate the site and
-<a href="https://pages.github.com/">GitHub Pages</a> to host it.</p>
-<h1>GitHub</h1>
-<p>GitHub distinguishes two [types of GitHub Pages]
-(https://help.github.com/articles/user-organization-and-project-pages/):
- <strong>User Pages</strong> and <strong>Project Pages</strong>.</p>
-<ul>
-<li><strong>User Page</strong> provides URL as <code>https://&lt;my-github-account&gt;.github.io</code> and
-requires site files to be on the <code>master</code> branch at the root. It creates
-additional obstacles in a workflow.</li>
-<li><strong>Project Page</strong> URL is <code>https://&lt;my-github-account&gt;.github.io/&lt;project&gt;</code>.
-The site can be deployed in separate branch <code>gh-pages</code> or <code>/docs</code> directory on
-<code>master</code> branch. So, it is possible to use one repository both for the site
-hosting and as a storage for the site generator scripts.</li>
-</ul>
-<p>Eventually, my choice is User Page for my personal page with a link to the blog
-and Project Page for the blog. So, I created two repositories:</p>
-<ul>
-<li><code>&lt;my-github-account&gt;.github.io</code> for [personal page]
-(https://github.com/Alexey-N-Chernyshov/Alexey-N-Chernyshov.github.io) and
-initialize it with the link to the blog.</li>
-<li><a href="https://github.com/Alexey-N-Chernyshov/blog">blog</a> and initialize it with
-README file.</li>
-</ul>
-<p>We will consider only the second one, the blog. It is time to clone it from
-GitHub.</p>
-<div class="highlight"><pre><span></span>$ git clone git@github.com:&lt;github-account&gt;/&lt;github-account&gt;.github.io.git
-</pre></div>
-
-
-<h1>Pelican</h1>
-<p>Pelican allows to write content in Markdown laguage and build pretty good HTML.
-It is easy to use, has a lot of themes and plugins. And it is really easy to
-start using it. Pelican is written in Python, thus to create a virtual
-environment for the blog project will be a good idea.
-<a href="https://github.com/davisp/ghp-import">ghp-import</a> is a handy tool that will
-help with the blog hosting. Finally, <code>pelican-quickstart</code> asks a set of
-questions and creates a skeleton project.</p>
-<div class="highlight"><pre><span></span>$ mkvirtualenv pelican
-$ pip install pelican markdown ghp-import
-$ pelican-quickstart
-Welcome to pelican-quickstart v3.7.1.
-
-This script will <span class="nb">help</span> you create a new Pelican-based website.
-
-Please answer the following questions so this script can generate the files
-needed by Pelican.
-
-
-&gt; Where <span class="k">do</span> you want to create your new web site? <span class="o">[</span>.<span class="o">]</span> .
-&gt; What will be the title of this web site? My blog
-&gt; Who will be the author of this web site? My name
-&gt; What will be the default language of this web site? <span class="o">[</span>en<span class="o">]</span> en
-&gt; Do you want to specify a URL prefix? e.g., http://example.com   <span class="o">(</span>Y/n<span class="o">)</span> y
-&gt; What is your URL prefix? <span class="o">(</span>see above example<span class="p">;</span> no trailing slash<span class="o">)</span> http://&lt;github-account&gt;.github.io/blog
-&gt; Do you want to <span class="nb">enable</span> article pagination? <span class="o">(</span>Y/n<span class="o">)</span> y
-&gt; How many articles per page <span class="k">do</span> you want? <span class="o">[</span><span class="m">10</span><span class="o">]</span> <span class="m">10</span>
-&gt; What is your <span class="nb">time</span> zone? <span class="o">[</span>Europe/Paris<span class="o">]</span> 
-&gt; Do you want to generate a Fabfile/Makefile to automate generation and publishing? <span class="o">(</span>Y/n<span class="o">)</span> y
-&gt; Do you want an auto-reload <span class="p">&amp;</span> simpleHTTP script to assist with theme and site development? <span class="o">(</span>Y/n<span class="o">)</span> y
-&gt; Do you want to upload your website using FTP? <span class="o">(</span>y/N<span class="o">)</span> n
-&gt; Do you want to upload your website using SSH? <span class="o">(</span>y/N<span class="o">)</span> n
-&gt; Do you want to upload your website using Dropbox? <span class="o">(</span>y/N<span class="o">)</span> n
-&gt; Do you want to upload your website using S3? <span class="o">(</span>y/N<span class="o">)</span> n
-&gt; Do you want to upload your website using Rackspace Cloud Files? <span class="o">(</span>y/N<span class="o">)</span> n
-&gt; Do you want to upload your website using GitHub Pages? <span class="o">(</span>y/N<span class="o">)</span> y
-&gt; Is this your personal page <span class="o">(</span>username.github.io<span class="o">)</span>? <span class="o">(</span>y/N<span class="o">)</span> n
-Done. Your new project is available at /path/to/the/blog/
-</pre></div>
-
-
-<p>Edit .gitignore and commit changes.</p>
-<div class="highlight"><pre><span></span>*.pid
-*.pyc
-*.swp
-output/
-</pre></div>
-
-
-<p><code>pelican-quickstart</code> creates two configuration files:</p>
-<ul>
-<li><code>pelicanconf.py</code> for local development</li>
-<li><code>publishconf.py</code> for product deployment</li>
-</ul>
-<h1>Write a content</h1>
-<p>Ensure you work in virtual environment, if not run </p>
-<div class="highlight"><pre><span></span>$ workon pelican
-</pre></div>
-
-
-<p>It is convenient to run development server on <a href="https://localhost:8000">https://localhost:8000</a> that
-will display changes as you make them. You can start it in the new console to
-see the output</p>
-<div class="highlight"><pre><span></span>$ make devserver
-</pre></div>
-
-
-<p>Note that <code>Ctrl+C</code> will not stop the server, use</p>
-<div class="highlight"><pre><span></span>$ ./develop_server.sh stop
-</pre></div>
-
-
-<p><a href="http://docs.getpelican.com/en/stable/content.html">Pelican stores</a> all content
-in <code>content</code> directory. There are two types of content:</p>
-<ul>
-<li><strong>pages</strong> for content that do not change very often (e.g., About, Contacts)</li>
-<li><strong>articles</strong>, or chronological blog posts in our case</li>
-</ul>
-<p>All content can be written in Markdown and should have metadata like this:</p>
-<div class="highlight"><pre><span></span><span class="n">Title</span><span class="o">:</span> <span class="n">My</span> <span class="kd">super</span> <span class="n">title</span>
-<span class="n">Date</span><span class="o">:</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">03</span> <span class="mi">10</span><span class="o">:</span><span class="mi">20</span>
-<span class="n">Modified</span><span class="o">:</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">05</span> <span class="mi">19</span><span class="o">:</span><span class="mi">30</span>
-<span class="n">Category</span><span class="o">:</span> <span class="n">Python</span>
-<span class="n">Tags</span><span class="o">:</span> <span class="n">pelican</span><span class="o">,</span> <span class="n">blog</span>
-<span class="n">Slug</span><span class="o">:</span> <span class="n">my</span><span class="o">-</span><span class="kd">super</span><span class="o">-</span><span class="n">post</span>
-<span class="n">Authors</span><span class="o">:</span> <span class="n">Alexis</span> <span class="n">Metaireau</span><span class="o">,</span> <span class="n">Conan</span> <span class="n">Doyle</span>
-<span class="n">Summary</span><span class="o">:</span> <span class="n">Short</span> <span class="n">version</span> <span class="k">for</span> <span class="n">index</span> <span class="n">and</span> <span class="n">feeds</span>
-
-<span class="n">This</span> <span class="k">is</span> <span class="n">the</span> <span class="n">content</span> <span class="n">of</span> <span class="n">my</span> <span class="kd">super</span> <span class="n">blog</span> <span class="n">post</span><span class="o">.</span>
-</pre></div>
-
-
-<p>You can start with about page in <code>content/pages/about.md</code>.</p>
-<h1>Publishing</h1>
-<p>Once you have added content just run</p>
-<div class="highlight"><pre><span></span>$ make github
-</pre></div>
-
-
-<p>It will generate HTML, commit it to the <code>gh-pages</code> branch and pushes to GitHub.</p>
-<h1>Google Analytics</h1>
-<p>Another good idea is to add Google Analytics to your blog. Go to
- <a href="http://www.google.com/analytics/">http://www.google.com/analytics/</a> and follow instructions. Add ID as 
-<code>US-XXXXXXXX-X</code> to publishconf.py. Deploy as described above.</p>
-<h1>Comments</h1>
-<p>Comments are provided by <a href="https://disqus.com">Disqus</a>. Head to the website and
-create an account. Here you should copy website name which is equal to the
-string before <code>.disqus</code> in URL of your account
-(i.e. https://alexey-chernyshovs-blog.disqus.com)...</p>
-<p><img alt="alt text" src="{filename}/images/disqus_website_name.png" title="Website name"></p>
-<p>... and paste to pelicanconf.py</p>
-<div class="highlight"><pre><span></span>DISQUS_SITENAME = &#39;alexey-chernyshovs-blog&#39;
-</pre></div>
-
-
-<p>But since Disqus doesn’t recognize the local address, this setting should go
-to publishconf.py.</p>
-<h1>Further work</h1>
-<p>Themes will be considered further.</p><p>There are <a href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</footer><!-- /.post-info -->                <p>How to create blog with Pelican and deploy it on GitHub Pages</p>
+                <a class="readmore" href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html">read more</a>
+<p>There are <a href="https://alexey-n-chernyshov.github.io/blog/pelican-blog.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>

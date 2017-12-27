@@ -23,7 +23,168 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://alexey-n-chernyshov.github.io/blog/pgindent.html">pgindent</a></h1>
+                    <h1 class="entry-title"><a href="https://alexey-n-chernyshov.github.io/blog/physical-recovery-with-pg_filedump.html">Physical recovery with pg_filedump</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2017-12-27T12:00:00+03:00">
+                Published: 2017-12-27
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://alexey-n-chernyshov.github.io/blog/author/alexey-chernyshov.html">Alexey Chernyshov</a>
+        </address>
+<p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/misc.html">misc</a>.</p>
+<p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/postgresql.html">PostgreSQL</a> </p>
+</footer><!-- /.post-info --><h1>Physical recovery with pg_filedump</h1>
+<p>If you can’t start your Postgres database and want to recover latest data from database heap files or want to recover just deleted or updated values, <code>pg_filedump</code> will help you.</p>
+<h2>About</h2>
+<p><code>pg_filedump</code> is a utility to dump contents of heap/index/control files. Some time ago it was enhanced to be suitable for physical recovery data from database heap files. Also recently there was added an ability to recover TOAST values and skip deleted values to the <code>pg_filedump</code> to be of full-value recovery utility.</p>
+<h3>Behind the scene</h3>
+<p><a href="https://www.postgresql.org/docs/current/static/storage-file-layout.html">Tables in Postgres</a> are stored in heap files divided into segments which are gigabyte-sized by default. Segments consist of pages (8kb by default) which stores data row by row. If an attribute is too large, the TOAST mechanism takes place. Simply put, it compresses, slices data into chunks and stores them in the external table. When a transaction deletes some data, actually, it is not deleted from the file immediately and can be restored. That’s <a href="http://momjian.us/main/writings/pgsql/mvcc.pdf">how MVCC works</a>.</p>
+<p><img alt="alt text" src="{filename}/images/pg_heap_file_page.png"></p>
+<h2>Usage</h2>
+<p>Let’s see the facilities of <code>pg_filedump</code>.</p>
+<h3>Install</h3>
+<div class="highlight"><pre><span></span>It’s easy to build.
+git clone git://git.postgresql.org/git/pg_filedump.git
+cd pg_filedump
+make
+</pre></div>
+
+
+<h3>Example</h3>
+<p>Let’s create test table and populate it with data from psql. I added large text from files with size of couple KB with <code>pg_read_file</code> to demonstrate TOAST’ed data. Checkpoint at the end flushes data files to the disk:</p>
+<div class="highlight"><pre><span></span># create table my_table(i int, t timestamp, content text);
+# insert into my_table values (1, now(), &#39;some text&#39;);
+# insert into my_table values (2, now(), ‘to be deleted’);
+# insert into my_table values (3, now(), pg_read_file(&#39;file_to_delete.txt&#39;));
+# insert into my_table values (4, now(), pg_read_file(&#39;some_file.txt&#39;));
+# checkpoint;
+</pre></div>
+
+
+<p>We can get relation id in an easy way as (we’ll consider further the more general way to know the heap file name):</p>
+<div class="highlight"><pre><span></span>select relfilenode from pg_class where relname = &#39;my_table&#39;;
+ relfilenode 
+-------------
+       16408
+(1 row)
+</pre></div>
+
+
+<p>We can find it by name.</p>
+<div class="highlight"><pre><span></span>find /path/to/db/ -type f | grep 16408
+</pre></div>
+
+
+<p>And dump the file. We should pass types of the table with <code>-D</code> option.</p>
+<div class="highlight"><pre><span></span>./pg_filedump -D int,timestamp,text /path/to/database/base/12445/16408
+*******************************************************************
+* PostgreSQL File/Block Formatted Dump Utility - Version 10.0
+*
+* File: /var/lib/postgresql/9.6/main/base/12445/16408
+* Options used: -D int,timestamp,text 
+*
+* Dump created on: Mon Dec 25 18:38:02 2017
+*******************************************************************
+
+Block    0 ********************************************************
+&lt;Header&gt; -----
+ Block Offset: 0x00000000         Offsets: Lower      40 (0x0028)
+ Block: Size 8192  Version    4            Upper    7952 (0x1f10)
+ LSN:  logid      0 recoff 0x0157e770      Special  8192 (0x2000)
+ Items:    4                      Free Space: 7912
+ Checksum: 0x0000  Prune XID: 0x0000027d  Flags: 0x0000 ()
+ Length (including item array): 40
+
+&lt;Data&gt; ------ 
+ Item   1 -- Length:   50  Offset: 8136 (0x1fc8)  Flags: NORMAL
+COPY: 1 2017-12-25 18:31:03.547059  some text
+ Item   2 -- Length:   54  Offset: 8080 (0x1f90)  Flags: NORMAL
+COPY: 2 2017-12-25 18:31:21.451178  to be deleted
+ Item   3 -- Length:   58  Offset: 8016 (0x1f50)  Flags: NORMAL
+COPY: 3 2017-12-25 18:32:00.895268  (TOASTED)
+ Item   4 -- Length:   58  Offset: 7952 (0x1f10)  Flags: NORMAL
+COPY: 4 2017-12-25 18:32:04.745484  (TOASTED)
+</pre></div>
+
+
+<p>The data we are interested in is after COPY. Option -o skips deleted data and -t option outputs TOAST’ed values.</p>
+<div class="highlight"><pre><span></span>./pg_filedump -o -D int,timestamp,text /var/lib/postgresql/9.6/main/base/12445/16408 | grep COPY
+
+COPY: 1 2017-12-25 18:31:03.547059  some text
+COPY: 4 2017-12-25 18:32:04.745484      very large string
+</pre></div>
+
+
+<p>But what if we don’t know the segment number or the database schema? For example, we cannot start Postgres instance. The Postgres stores all the data about tables in the table named <code>pg_class</code> with relfilenode id 1259. So, we can get the segment number by the name of our table. Here <code>~</code> in <code>-D</code> argument means the rest of the row we do not consider.</p>
+<div class="highlight"><pre><span></span>./pg_filedump -D name,oid,oid,oid,oid,oid,oid,~ /path/to/database/1259 | grep COPY | grep my_table
+COPY: my_table  2200    16410   0   10  0   16408
+</pre></div>
+
+
+<p>Where the last number is our segment number 16408. We can obtain schema from the table name <code>pg_attribute</code> with relfilenode 1249 as well. The third column is an oid of the attribute type.</p>
+<div class="highlight"><pre><span></span>./pg_filedump -ot -D oid,name,oid,int,smallint,~ /var/lib/postgresql/9.6/main/base/12445/1249 | grep 16408
+COPY: 16408 i   23  -1  4
+COPY: 16408 t   1114    -1  8
+COPY: 16408 content 25  -1  -1
+COPY: 16408 ctid    27  0   6
+COPY: 16408 xmin    28  0   4
+COPY: 16408 cmin    29  0   4
+COPY: 16408 xmax    28  0   4
+COPY: 16408 cmax    29  0   4
+COPY: 16408 tableoid    26  0   4
+</pre></div>
+
+
+<p>The next step is to get types by oids which are 23, 25 and 1114.</p>
+<div class="highlight"><pre><span></span>./pg_filedump -i -D name,~ /path/to/database/1247 | grep -A5 -E &#39;OID: (23|25|1114)&#39;
+  XMIN: 1  XMAX: 0  CID|XVAC: 0  OID: 23
+  Block Id: 0  linp Index: 8   Attributes: 30   Size: 32
+  infomask: 0x0909 (HASNULL|HASOID|XMIN_COMMITTED|XMAX_INVALID) 
+  t_bits: [0]: 0xff [1]: 0xff [2]: 0xff [3]: 0x07 
+
+COPY: int4
+--
+  XMIN: 1  XMAX: 0  CID|XVAC: 0  OID: 25
+  Block Id: 0  linp Index: 10   Attributes: 30   Size: 32
+  infomask: 0x0909 (HASNULL|HASOID|XMIN_COMMITTED|XMAX_INVALID) 
+  t_bits: [0]: 0xff [1]: 0xff [2]: 0xff [3]: 0x07 
+
+COPY: text
+--
+  XMIN: 1  XMAX: 0  CID|XVAC: 0  OID: 1114
+  Block Id: 1  linp Index: 39   Attributes: 30   Size: 32
+  infomask: 0x0909 (HASNULL|HASOID|XMIN_COMMITTED|XMAX_INVALID) 
+  t_bits: [0]: 0xff [1]: 0xff [2]: 0xff [3]: 0x07 
+
+COPY: timestamp
+</pre></div>
+
+
+<p>Here we know the relfilenode of the table we are looking for and the schema and can easily dump the content of the table.</p>
+<div class="highlight"><pre><span></span>./pg_filedump -D int,timestamp,text /path/to/database/base/16408
+</pre></div>
+
+
+<h2>Links</h2>
+<p><a href="https://wiki.postgresql.org/wiki/Pg_filedump">Wiki page on pg_filedump</a>
+<a href="https://blog.dbi-services.com/displaying-the-contents-of-a-postgresql-data-file-with-pg_filedump/">More on pg_filedump. Find it interesting</a>
+<a href="https://afiskon.github.io/static/2017/pg-filedump-pgday2017.pdf">Slides about pg_filedump on PG Day'17</a>
+<a href="https://habrahabr.ru/company/postgrespro/blog/319770/">Article in Russian, part 1</a>
+<a href="https://habrahabr.ru/company/postgrespro/blog/323644/">Article in Russian, part 2</a></p><p>There are <a href="https://alexey-n-chernyshov.github.io/blog/physical-recovery-with-pg_filedump.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://alexey-n-chernyshov.github.io/blog/pgindent.html" rel="bookmark"
+                           title="Permalink to pgindent">pgindent</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2017-06-30T11:00:00+03:00">
                 Published: 2017-06-30
@@ -38,32 +199,10 @@
         </address>
 <p>In <a href="https://alexey-n-chernyshov.github.io/blog/category/postgresql.html">PostgreSQL</a>.</p>
 <p>tags: <a href="https://alexey-n-chernyshov.github.io/blog/tag/postgresql.html">PostgreSQL</a> </p>
-</footer><!-- /.post-info --><p>The PostgreSQL code has really confusing indents. For the help for programmers,
-there is a tool named pgindent located at <code>src/tools/pgindent</code>. Earlier it was
-written in C and has had a set of dependencies, the installation was tedious.
-Now, it is rewritten in Perl and downloads all dependencies itself. The only
-requirement is <code>pg_config</code> on <code>PATH</code>, to run it in such way use <code>--build</code>
-option. The tool clones git repo <code>pg_bsd_indent</code>, downloads typedefs, indents
-and then deletes repo. If the previous run was not successful, the repository
-will stay in the <code>src/tools/pgindent/pg_bsd_indent</code> and will cause an error for
-git clone command, just remove it. The other point it generates files for
-typedefs, do not forget to delete them before commit. To indent single file
-run:</p>
-<div class="highlight"><pre><span></span>src/tools/pgindent/pgindent --build filename
-</pre></div>
-
-
-<p>To indent all files in current directory and subdirectories:</p>
-<div class="highlight"><pre><span></span>src/tools/pgindent/pgindent --build
-</pre></div>
-
-
-<p>There are also pgperltidy for Perl.</p><p>There are <a href="https://alexey-n-chernyshov.github.io/blog/pgindent.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</footer><!-- /.post-info -->                <p>New pgindent tool</p>
+                <a class="readmore" href="https://alexey-n-chernyshov.github.io/blog/pgindent.html">read more</a>
+<p>There are <a href="https://alexey-n-chernyshov.github.io/blog/pgindent.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
