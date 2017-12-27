@@ -10,7 +10,6 @@ If you can’t start your Postgres database and want to recover latest data from
 ### Behind the scene
 [Tables in Postgres](https://www.postgresql.org/docs/current/static/storage-file-layout.html) are stored in heap files divided into segments which are gigabyte-sized by default. Segments consist of pages (8kb by default) which stores data row by row. If an attribute is too large, the TOAST mechanism takes place. Simply put, it compresses, slices data into chunks and stores them in the external table. When a transaction deletes some data, actually, it is not deleted from the file immediately and can be restored. That’s [how MVCC works](http://momjian.us/main/writings/pgsql/mvcc.pdf).
 
-![alt text]({filename}/images/pg_heap_file_page.png)
 ## Usage
 Let’s see the facilities of `pg_filedump`.
 ### Install
