@@ -126,10 +126,10 @@ Here we know the relfilenode of the table we are looking for and the schema and 
 ./pg_filedump -D int,timestamp,text /path/to/database/base/16408
 ```
 ## Links
-[Wiki page on pg\_filedump](https://wiki.postgresql.org/wiki/Pg_filedump)
-[More on pg\_filedump. Find it interesting](https://blog.dbi-services.com/displaying-the-contents-of-a-postgresql-data-file-with-pg_filedump/)
-[Slides about pg\_filedump on PG Day'17](https://afiskon.github.io/static/2017/pg-filedump-pgday2017.pdf)
-[Article in Russian, part 1](https://habrahabr.ru/company/postgrespro/blog/319770/)
-[Article in Russian, part 2](https://habrahabr.ru/company/postgrespro/blog/323644/)
+* [Wiki page on pg\_filedump](https://wiki.postgresql.org/wiki/Pg_filedump)
+* [More on pg\_filedump. Find it interesting](https://blog.dbi-services.com/displaying-the-contents-of-a-postgresql-data-file-with-pg_filedump/)
+* [Slides about pg\_filedump on PG Day'17](https://afiskon.github.io/static/2017/pg-filedump-pgday2017.pdf)
+* [Article in Russian, part 1](https://habrahabr.ru/company/postgrespro/blog/319770/)
+* [Article in Russian, part 2](https://habrahabr.ru/company/postgrespro/blog/323644/)
 
 
